@@ -1,0 +1,6 @@
+# Local dev stuff
+local/
+
+# Python temp files
+__pycache__/
+*.pyc
