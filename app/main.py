@@ -4,7 +4,7 @@ import time
 import logging
 import json
 
-from src.profilekeepalive import ProfileKeepAlive
+from src.profilepinger import ProfilePinger
 
 CONFIG_FILE = f"{sys.path[0]}/config.json"
 
@@ -43,13 +43,13 @@ logger.info("Loading config")
 with open(CONFIG_FILE) as f:
     cfg = json.load(f)
 
-pka = ProfileKeepAlive(cfg)
-pka.start()
+pinger = ProfilePinger(cfg)
+pinger.start()
 
 time.sleep(7)
-cfg['profileKeepAlive']['requestDelay'] = 0
-cfg['profileKeepAlive']['profileUpdateDelay'] = 3
-pka.updateConfig(cfg)
+cfg['profilePinger']['requestDelay'] = 0
+cfg['profilePinger']['profileUpdateDelay'] = 3
+pinger.updateConfig(cfg)
 
 # While web service is not added we need a loop...
 while True:

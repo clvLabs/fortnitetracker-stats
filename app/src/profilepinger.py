@@ -4,10 +4,10 @@ import time
 import requests
 import threading
 
-class ProfileKeepAlive():
+class ProfilePinger():
 
   def __init__(self, cfg):
-    self.log = logging.getLogger('ProfileKeepAlive')
+    self.log = logging.getLogger('ProfilePinger')
     self.log.info("Initializing")
 
     self.updateConfig(cfg, initialUpdate=True)
@@ -53,10 +53,10 @@ class ProfileKeepAlive():
     else:
       self.log.info("Configuration UPDATED:")
 
-    self.log.info(f" - Tracker       : {self.cfg['profileKeepAlive']['trackerURL']}")
-    self.log.info(f" - Notifications : {self.cfg['profileKeepAlive']['notificationsURL']}")
-    self.log.info(f" - Request delay : {self.cfg['profileKeepAlive']['requestDelay']}s")
-    self.log.info(f" - Profile delay : {self.cfg['profileKeepAlive']['profileUpdateDelay']}s")
+    self.log.info(f" - Tracker       : {self.cfg['profilePinger']['trackerURL']}")
+    self.log.info(f" - Notifications : {self.cfg['profilePinger']['notificationsURL']}")
+    self.log.info(f" - Request delay : {self.cfg['profilePinger']['requestDelay']}s")
+    self.log.info(f" - Profile delay : {self.cfg['profilePinger']['profileUpdateDelay']}s")
 
 
   # [ Private methods ] #################################################################
@@ -80,17 +80,17 @@ class ProfileKeepAlive():
       for user in self.cfg['profiles']:
 
           self.log.info(f"[{user}] Requesting tracker page")
-          response = requests.get(self.cfg['profileKeepAlive']['trackerURL'].format(user=user))
+          response = requests.get(self.cfg['profilePinger']['trackerURL'].format(user=user))
           if response.status_code != 200:
             self.log.warning(f"HTTP status {response.status_code}")
-          if not self._threadsleep(self.cfg['profileKeepAlive']['requestDelay']):
+          if not self._threadsleep(self.cfg['profilePinger']['requestDelay']):
             return
 
           self.log.info(f"[{user}] Requesting notification page")
-          response = requests.get(self.cfg['profileKeepAlive']['notificationsURL'].format(ip=self.publicIP))
+          response = requests.get(self.cfg['profilePinger']['notificationsURL'].format(ip=self.publicIP))
           if response.status_code != 200:
             self.log.warning(f"HTTP status {response.status_code}")
-          if not self._threadsleep(self.cfg['profileKeepAlive']['requestDelay']):
+          if not self._threadsleep(self.cfg['profilePinger']['requestDelay']):
             return
 
-      self._threadsleep(self.cfg['profileKeepAlive']['profileUpdateDelay'])
+      self._threadsleep(self.cfg['profilePinger']['profileUpdateDelay'])

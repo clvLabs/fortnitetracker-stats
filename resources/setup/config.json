@@ -4,7 +4,7 @@
         "sampleUser1",
         "sampleUser2"
     ],
-    "profileKeepAlive": {
+    "profilePinger": {
         "trackerURL": "https://fortnitetracker.com/profile/all/{user}/matches",
         "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={ip}",
         "requestDelay": 0.5,
