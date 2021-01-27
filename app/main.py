@@ -46,11 +46,6 @@ with open(CONFIG_FILE) as f:
 pinger = ProfilePinger(cfg)
 pinger.start()
 
-time.sleep(7)
-cfg['profilePinger']['requestDelay'] = 0
-cfg['profilePinger']['profileUpdateDelay'] = 3
-pinger.updateConfig(cfg)
-
 # While web service is not added we need a loop...
 while True:
   time.sleep(100)
