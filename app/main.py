@@ -51,12 +51,9 @@ cfg['profileKeepAlive']['requestDelay'] = 0
 cfg['profileKeepAlive']['profileUpdateDelay'] = 3
 pka.updateConfig(cfg)
 
-logger.info("Press <ENTER> to exit")
-input()
-logger.info("Closing")
-pka.stop()
-
-logger.info("FINISHED")
+# While web service is not added we need a loop...
+while True:
+  time.sleep(100)
 
 # serviceport = int(cfg['webPort'])
 # logger.info(f"Starting web server on port {serviceport}")
