@@ -14,3 +14,6 @@ logs/
 # Python temp files
 __pycache__/
 *.pyc
+
+# GNOMEish Trash folder
+.Trash-1000/
