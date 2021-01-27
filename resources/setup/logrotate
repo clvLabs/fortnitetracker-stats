@@ -1,0 +1,8 @@
+/var/log/fortnitetracker-stats/servicelog {
+  rotate 4
+  weekly
+  compress
+  missingok
+  notifempty
+  create 0640 pi pi
+}

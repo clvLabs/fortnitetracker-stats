@@ -1,0 +1,13 @@
+{
+    "webPort": 80,
+    "profiles": [
+        "sampleUser1",
+        "sampleUser2"
+    ],
+    "profileKeepAlive": {
+        "trackerURL": "https://fortnitetracker.com/profile/all/{user}/matches",
+        "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={ip}",
+        "requestDelay": 0.5,
+        "profileUpdateDelay": 300
+    }
+}

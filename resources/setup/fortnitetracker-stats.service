@@ -1,0 +1,10 @@
+ [Unit]
+ Description=fortnitetracker-stats
+ After=multi-user.target
+
+ [Service]
+ Type=idle
+ ExecStart=__BASE_PATH__/app/scripts/start.sh
+
+ [Install]
+ WantedBy=multi-user.target
