@@ -1,13 +1,6 @@
 # Local dev stuff
 local/
 
-# Local config
-app/config.json
-
-# Custom scripts
-app/scripts/start.sh
-app/scripts/devrun.sh
-
 # Local logs folder
 logs/
 
