@@ -5,6 +5,7 @@ import logging
 import json
 
 from src.profilepinger import ProfilePinger
+from src.apistatsgetter import APIStatsGetter
 
 CONFIG_FILE = f"{sys.path[0]}/config.json"
 
@@ -45,6 +46,11 @@ with open(CONFIG_FILE) as f:
 
 pinger = ProfilePinger(cfg)
 pinger.start()
+
+time.sleep(1) # Allow a clean startup in the logs :)
+
+stats = APIStatsGetter(cfg)
+stats.start()
 
 # While web service is not added we need a loop...
 while True:

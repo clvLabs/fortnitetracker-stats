@@ -9,5 +9,8 @@
         "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={ip}",
         "requestDelay": 0.5,
         "profileUpdateDelay": 300
+    },
+    "apiStatsGetter": {
+        "requestDelay": 100
     }
 }
