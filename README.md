@@ -12,7 +12,7 @@ This will create a few new files:
 * `logs/setup/setup-completed.txt`: flag to avoid re-installing
 * `logs/setup/setup.log`: log of the setup process
 * `scripts/start.sh`: customized start script (called by systemd)
-* `scripts/devrun.sh`: customized development start script (see [Development](#Development))
+* `scripts/devrun.sh`: customized development start script (see [Run in development mode](#run-in-development-mode))
 
 ## Usage
 
