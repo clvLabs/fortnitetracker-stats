@@ -79,14 +79,14 @@ class ProfilePinger():
 
       for user in self.cfg['profiles']:
 
-          self.log.info(f"[{user}] Requesting tracker page")
-          response = requests.get(self.cfg['profilePinger']['trackerURL'].format(user=user))
+          self.log.info(f"[{user['username']}] Requesting tracker page")
+          response = requests.get(self.cfg['profilePinger']['trackerURL'].format(user=user['trn_username']))
           if response.status_code != 200:
             self.log.warning(f"HTTP status {response.status_code}")
           if not self._threadsleep(self.cfg['profilePinger']['requestDelay']):
             return
 
-          self.log.info(f"[{user}] Requesting notification page")
+          self.log.info(f"[{user['username']}] Requesting notification page")
           response = requests.get(self.cfg['profilePinger']['notificationsURL'].format(ip=self.publicIP))
           if response.status_code != 200:
             self.log.warning(f"HTTP status {response.status_code}")

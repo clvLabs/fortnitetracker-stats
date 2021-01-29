@@ -1,8 +1,21 @@
 {
     "webPort": 80,
     "profiles": [
-        "sampleUser1",
-        "sampleUser2"
+        {
+            "username": "first_user",
+            "trn_username": "first_user",
+            "platform": "kbd"
+        },
+        {
+            "username": "other_user_not_epic",
+            "trn_username": "psn(other_user_not_epic)",
+            "platform": "gamepad"
+        },
+        {
+            "username": "third_user",
+            "trn_username": "third_user",
+            "platform": "gamepad"
+        }
     ],
     "profilePinger": {
         "trackerURL": "https://fortnitetracker.com/profile/all/{user}/matches",
@@ -10,7 +23,13 @@
         "requestDelay": 0.5,
         "profileUpdateDelay": 300
     },
+    "apiHeaders": {
+        "TRN-Api-Key": "add_here_your_api_key"
+    },
     "apiStatsGetter": {
+        "trackerURL": "https://api.fortnitetracker.com/v1/",
+        "profileURL": "https://api.fortnitetracker.com/v1/profile/{platform}/{trn_username}",
+        "matchesURL": "https://api.fortnitetracker.com/v1/profile/account/{user_id}/matches",
         "requestDelay": 100
     }
 }
