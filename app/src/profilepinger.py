@@ -62,11 +62,10 @@ class ProfilePinger():
   # [ Private methods ] #################################################################
 
   def _threadsleep(self, seconds):
-    elapsed = 0
+    endtime = time.time() + seconds
 
-    while elapsed < seconds:
-      time.sleep(0.1)
-      elapsed += 0.1
+    while time.time() < endtime:
+      time.sleep(1)
       if not self.threadrunning:
         return False  # Wait cancelled, please exit
 
