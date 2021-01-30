@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import logging
 import time
+from typing import List
 import requests
 import threading
 import json
@@ -60,19 +61,37 @@ class APIStatsGetter():
 
   def fill_users_id(self):
     for user in self.cfg['profiles']:
-      self.log.info(f"[{user['trn_username']}] Requesting profile data")
-      user['user_id'] = self.get_user_id(user['trn_username'], user['platform'])
+      self.log.info(f"[{user['username']}] Requesting profile data")
+      user_id = self.get_user_id(user['trn_username'], user['platform'])
+      if user_id:
+        user['user_id'] = user_id
 
 
   def get_user_id(self, trn_user, platform):
     profile_response_dict = self.get_user_profile(trn_user, platform)
-    return profile_response_dict['accountId']
+
+    if profile_response_dict:
+      return profile_response_dict['accountId']
+    else:
+      return None
 
 
   def get_user_profile(self, trn_user, platform):
-    profile_response = requests.get(self.cfg['apiStatsGetter']['profileURL'].format(platform=platform, trn_username=trn_user), headers = self.cfg['apiHeaders'])
-    profile_response_dict = json.loads(profile_response.text)
-    return profile_response_dict
+    url = self.cfg['apiStatsGetter']['profileURL'].format(platform=platform, trn_username=trn_user)
+    profile_response = requests.get(url, headers = self.cfg['apiHeaders'])
+    try:
+      profile_response_dict = json.loads(profile_response.text)
+    except:
+      self.log.exception(f"EXCEPTION getting profile info for {trn_user} - platform {platform}")
+      return None
+
+    if 'accountId' in profile_response_dict:
+      return profile_response_dict
+    else:
+      self.log.error(f"Can't get profile info for {trn_user} - platform {platform}")
+      self.log.error(f"Response: {profile_response_dict}")
+      self.log.error(f"User {trn_user} will be IGNORED")
+      return None
 
 
   # [ Private methods ] #################################################################
@@ -94,14 +113,26 @@ class APIStatsGetter():
 
       # Recorremos el array de profiles de los que tenemos que recopilar datos
       for user in self.cfg['profiles']:
+
+        # Avoid checking users with no user_id (possible errors getting profile)
+        if not 'user_id' in user:
+          continue
+
         # path to data file
         filename = f"{DATA_FOLDER}/{user['username']}_matches.json"
         self.log.info(f"Requesting matches for {user['username']}")
+
         # hacemos el request
-        matches_response = requests.get(
-                            self.cfg['apiStatsGetter']['matchesURL'].format(user_id=user['user_id']),
-                            headers=self.cfg['apiHeaders'])
+        url = self.cfg['apiStatsGetter']['matchesURL'].format(user_id=user['user_id'])
+        matches_response = requests.get(url, headers=self.cfg['apiHeaders'])
         matches_actual_dict = json.loads(matches_response.text)
+
+        # Make sure we have a valid response
+        if type(matches_actual_dict) is not list:
+          self.log.error(f"Can't get matches for {user['username']}")
+          self.log.error(f"Response: {matches_actual_dict}")
+          self.log.error(f"SKIPPING {user['username']}")
+          continue
 
         try:
           # cargamos la historia de partidas, si peta, el try lo llevará
