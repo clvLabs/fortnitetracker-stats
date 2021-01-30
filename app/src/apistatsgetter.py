@@ -5,6 +5,8 @@ import requests
 import threading
 import json
 
+DATA_FOLDER = "/fortnitetracker-stats/data"
+
 class APIStatsGetter():
 
   def __init__(self, cfg):
@@ -93,7 +95,7 @@ class APIStatsGetter():
       # Recorremos el array de profiles de los que tenemos que recopilar datos
       for user in self.cfg['profiles']:
         # path to data file
-        filename = f"/data/{user['username']}_matches.json"
+        filename = f"{DATA_FOLDER}/{user['username']}_matches.json"
         self.log.info(f"Requesting matches for {user['username']}")
         # hacemos el request
         matches_response = requests.get(

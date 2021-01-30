@@ -1,0 +1,3 @@
+# Python temp files
+__pycache__/
+*.pyc

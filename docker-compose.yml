@@ -1,0 +1,21 @@
+version: '3.2'
+
+services:
+
+  app:
+    build: .
+    image: fortnitetracker-stats
+    container_name: fortnitetracker-stats
+    restart: always
+    volumes:
+      - type: bind
+        source: ./config
+        target: /fortnitetracker-stats/config
+      - type: bind
+        source: ./data
+        target: /fortnitetracker-stats/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"

@@ -2,81 +2,117 @@
 
 Stats and tools for fortnitetracker.com
 
-## Setup on the Raspberry Pi
+## Setup
 
-* Clone the repo somewhere on your Pi.
-* Run `scripts/setup.sh` from the project folder.
+* Clone the repo
+* Copy `sample/config` as `config`
+* Edit `config.json`
+* Build the Docker image with `docker-compose build`
 
-This will create a few new files:
-* `app/config.json`: edit this one after setup
-* `logs/setup/setup-completed.txt`: flag to avoid re-installing
-* `logs/setup/setup.log`: log of the setup process
-* `scripts/start.sh`: customized start script (called by systemd)
-* `scripts/devrun.sh`: customized development start script (see [Run in development mode](#run-in-development-mode))
+### config.json
+
+```json
+{
+    "profiles": [
+        {
+            "username": "first_user",
+            "trn_username": "first_user",
+            "platform": "kbd"
+        },
+        {
+            "username": "other_user_not_epic",
+            "trn_username": "psn(other_user_not_epic)",
+            "platform": "gamepad"
+        },
+        {
+            "username": "third_user",
+            "trn_username": "third_user",
+            "platform": "gamepad"
+        }
+    ],
+    "profilePinger": {
+        "trackerURL": "https://fortnitetracker.com/profile/all/{user}/matches",
+        "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={ip}",
+        "requestDelay": 0.5,
+        "profileUpdateDelay": 300
+    },
+    "apiHeaders": {
+        "TRN-Api-Key": "add_here_your_api_key"
+    },
+    "apiStatsGetter": {
+        "trackerURL": "https://api.fortnitetracker.com/v1/",
+        "profileURL": "https://api.fortnitetracker.com/v1/profile/{platform}/{trn_username}",
+        "matchesURL": "https://api.fortnitetracker.com/v1/profile/account/{user_id}/matches",
+        "requestDelay": 100
+    }
+```
+
+* `profiles`: list of profiles to be checked
+    * `username`: TO-DO: add desc
+    * `trn_username`: TO-DO: add desc
+    * `platform`: TO-DO: add desc
+* `profilePinger`: settings for the _pinger_
+    * `trackerURL`: TO-DO: add desc
+    * `notificationsURL`: TO-DO: add desc
+    * `requestDelay`: TO-DO: add desc
+    * `profileUpdateDelay`: TO-DO: add desc
+* `apiHeaders`: TO-DO: add desc
+    * `TRN-Api-Key`: TO-DO: add desc
+* `apiStatsGetter`: settings for the _stats getter_
+    * `trackerURL`: TO-DO: add desc
+    * `profileURL`: TO-DO: add desc
+    * `matchesURL`: TO-DO: add desc
+    * `requestDelay`: TO-DO: add desc
+
 
 ## Usage
 
-The app is started as a `systemd` service, so there's not much to do besides starting your Pi...
+Once the image has been built you can start the service with `docker-compose up -d`.
 
-### Web interface
+This will start the container in _detached_ mode.
 
-`TO-DO`
+If you want to see its logs, use `docker-compose logs -f`
 
-### Stats storage
-
-`TO-DO`
-
-### Service logs
-
-Service logs are stored in `/var/log/fortnitetracker-stats/servicelog` and rotated with `logrotate` (see `resources/setup/logrotate` for details)
+You can stop the service with `docker-compose down`
 
 ## Development
 
-### Disable the systemd service
-
-To be able to start developing you must first stop and disable the service.
-
-```
-$ sudo systemctl stop fortnitetracker-stats.service
-$ sudo systemctl disable fortnitetracker-stats.service
+### Build image
+```bash
+$ dev/build.sh
 ```
 
-### Run in development mode
-
-Run `scripts/devrun.sh` from the project folder.
-
-This will start the program in `watch` mode: if you change any `py` file the program will automatically restart.
-
-### Edit the source files from your computer
-
-If you want to edit the source files with your editor you can use `sshfs` to mount the `fortnitetracker-stats` folder from your Pi on a folder in your local system.
-
-Let's assume:
-* The Pi is on 192.168.1.100
-* The code folder at the Pi is `/home/pi/fortnitetracker-stats`
-* The code folder at the computer is `/home/myuser/source/fortnitetracker-stats`
-
-To mount the folder on your local system, run this **on your computer**:
-```
-$ sudo sshfs -o allow_other pi@192.168.1.100:/home/pi/fortnitetracker-stats/ /home/myuser/source/fortnitetracker-stats
+### Build image (force full rebuild)
+```bash
+$ dev/build.sh --no-cache
 ```
 
-While the folder is mounted you can use your editor of choice in your host computer to edit files on the Pi.
-
-This works together with `devrun.sh` so when you save the file on your computer the program will automatically restart on the Pi.
-
-Once you are finished you should unmount the folder:
-
-```
-$ sudo umount /home/myuser/source/fortnitetracker-stats
+### Run container with code mapped to local copy
+```bash
+$ dev/run.sh
 ```
 
-### Re-enable the systemd service
-
-To re-enable the service:
-
-```
-$ sudo systemctl enable fortnitetracker-stats.service
-$ sudo systemctl start fortnitetracker-stats.service
+### Run container with code mapped to local copy (with restart on changes)
+```bash
+$ dev/devwatch.sh
 ```
 
+### Restart container
+```bash
+$ dev/restart.sh
+```
+
+### Stop container
+```bash
+$ dev/stop.sh
+```
+
+### Run a container starting with a bash shell
+```bash
+$ dev/shell.sh
+```
+
+### Get a bash shell in a running container
+```bash
+$ docker exec -it fortnitetracker-stats bash
+```

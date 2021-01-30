@@ -7,7 +7,7 @@ import json
 from src.profilepinger import ProfilePinger
 from src.apistatsgetter import APIStatsGetter
 
-CONFIG_FILE = f"{sys.path[0]}/config.json"
+CONFIG_FILE = "/fortnitetracker-stats/config/config.json"
 
 # ----------------------------------------------------------------------
 # ---

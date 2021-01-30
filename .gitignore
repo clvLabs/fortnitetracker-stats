@@ -1,12 +1,9 @@
 # Local dev stuff
 local/
 
-# Local logs folder
-logs/
+# Local config
+/config
 
 # Python temp files
 __pycache__/
 *.pyc
-
-# GNOMEish Trash folder
-.Trash-1000/
