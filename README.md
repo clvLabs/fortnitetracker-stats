@@ -17,7 +17,7 @@ Stats and tools for fortnitetracker.com
         {
             "username": "first_user",
             "trn_username": "first_user",
-            "platform": "kbd"
+            "platform": "kbm"
         },
         {
             "username": "other_user_not_epic",
@@ -27,7 +27,7 @@ Stats and tools for fortnitetracker.com
         {
             "username": "third_user",
             "trn_username": "third_user",
-            "platform": "gamepad"
+            "platform": "touch"
         }
     ],
     "profilePinger": {
@@ -42,11 +42,11 @@ Stats and tools for fortnitetracker.com
     },
     "apiStatsGetter": {
         "active": true,
-        "trackerURL": "https://api.fortnitetracker.com/v1/",
         "profileURL": "https://api.fortnitetracker.com/v1/profile/{platform}/{trn_username}",
         "matchesURL": "https://api.fortnitetracker.com/v1/profile/account/{user_id}/matches",
         "requestDelay": 100
     }
+}
 ```
 
 * `profiles`: list of profiles to be checked
@@ -71,7 +71,7 @@ Stats and tools for fortnitetracker.com
 
 ## Usage
 
-Once the image has been built you can start the service with `docker-compose up -d`.
+Once the image has been built you can start the service with `docker-compose up -d`
 
 This will start the container in _detached_ mode.
 
@@ -82,41 +82,41 @@ You can stop the service with `docker-compose down`
 ## Development
 
 ### Build image
-```bash
+```
 $ dev/build.sh
 ```
 
 ### Build image (force full rebuild)
-```bash
+```
 $ dev/build.sh --no-cache
 ```
 
 ### Run container with code mapped to local copy
-```bash
+```
 $ dev/run.sh
 ```
 
 ### Run container with code mapped to local copy (with restart on changes)
-```bash
+```
 $ dev/devwatch.sh
 ```
 
 ### Restart container
-```bash
+```
 $ dev/restart.sh
 ```
 
 ### Stop container
-```bash
+```
 $ dev/stop.sh
 ```
 
 ### Run a container starting with a bash shell
-```bash
+```
 $ dev/shell.sh
 ```
 
 ### Get a bash shell in a running container
-```bash
+```
 $ docker exec -it fortnitetracker-stats bash
 ```
