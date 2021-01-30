@@ -3,6 +3,7 @@ import logging
 import time
 import requests
 import threading
+import json
 
 class APIStatsGetter():
 
@@ -64,7 +65,7 @@ class APIStatsGetter():
     return profile_response_dict['accountId']
 
   def get_user_profile(self, trn_user, platform):
-    profile_response = requests.get(self.cfg['apiStatsGetter']['profileURL'].format(platform=platform, trn_username=trn_username), headers = self.cfg['apiHeaders'])
+    profile_response = requests.get(self.cfg['apiStatsGetter']['profileURL'].format(platform=platform, trn_username=trn_user), headers = self.cfg['apiHeaders'])
     profile_response_dict = json.loads(profile_response.text)
     return profile_response_dict
   
