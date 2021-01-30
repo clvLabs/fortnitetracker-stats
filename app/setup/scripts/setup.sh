@@ -11,13 +11,17 @@ log ""
 log "---[ creating data folder ]-----------------------------"
 log ""
 
-mkdir --parents /fortnitetracker-stats/data
+mkdir --parents --verbose /fortnitetracker-stats/data
 
 log ""
-log "---[ installing dependencies ]-----------------------------"
+log "---[ installing system dependencies ]-----------------------------"
 log ""
 
 cat /fortnitetracker-stats/app/setup/resources/system-requirements.txt | xargs apt -y install
+
+log ""
+log "---[ installing python dependencies ]-----------------------------"
+log ""
 
 pip3 install --requirement /fortnitetracker-stats/app/setup/resources/python-requirements.txt
 
