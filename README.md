@@ -32,8 +32,8 @@ Stats and tools for fortnitetracker.com
     ],
     "profilePinger": {
         "active": true,
-        "trackerURL": "https://fortnitetracker.com/profile/all/{user}/matches",
-        "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={ip}",
+        "trackerURL": "https://fortnitetracker.com/profile/all/{trn_username}/matches",
+        "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={public_ip}",
         "requestDelay": 0.5,
         "profileUpdateDelay": 300
     },
