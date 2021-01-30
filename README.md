@@ -7,7 +7,7 @@ Stats and tools for fortnitetracker.com
 * Clone the repo
 * Copy the `sample/config` folder in the main repo folder as `config`
 * Edit `config/config.json`
-* Build the Docker image with `docker-compose build`
+* Build the Docker image with `scripts/build.sh`
 
 ### config.json
 
@@ -73,13 +73,36 @@ Stats and tools for fortnitetracker.com
 
 ## Usage
 
-Once the image has been built you can start the service with `docker-compose up -d`
+### Start the service
+```
+$ scripts/start.sh
+```
 
-This will start the container in _detached_ mode.
+### Stop the service
+```
+$ scripts/stop.sh
+```
 
-If you want to see its logs, use `docker-compose logs -f`
+### Restart the service
+```
+$ scripts/restart.sh
+```
 
-You can stop the service with `docker-compose down`
+### Update the service
+```
+$ scripts/update.sh
+```
+
+### View service logs
+```
+$ scripts/logs.sh
+```
+
+### Build the container
+```
+$ scripts/build.sh
+```
+
 
 ## Development
 
