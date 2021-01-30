@@ -9,11 +9,11 @@ services:
         restart: always
         volumes:
             - type: bind
-                source: ./config
-                target: /fortnitetracker-stats/config
+              source: ./config
+              target: /fortnitetracker-stats/config
             - type: bind
-                source: ./data
-                target: /fortnitetracker-stats/data
+              source: ./data
+              target: /fortnitetracker-stats/data
         logging:
             driver: "json-file"
             options:
