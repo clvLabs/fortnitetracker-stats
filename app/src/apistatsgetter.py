@@ -18,7 +18,7 @@ class APIStatsGetter(TaskThread):
 
     self.updateConfig(cfg, initialUpdate=True)
 
-    # We grab the users_ids and retain until next start
+    # Grab the users_ids and retain until next start
     self.fill_users_id()
 
 
@@ -70,7 +70,7 @@ class APIStatsGetter(TaskThread):
   def mainLoop(self):
     self.log.info("New api stats update --------------------------------")
 
-    # Recorremos el array de profiles de los que tenemos que recopilar datos
+    # loop through the profiles array
     for user in self.cfg['profiles']:
 
       # Avoid checking users with no user_id (possible errors getting profile)
@@ -81,7 +81,7 @@ class APIStatsGetter(TaskThread):
       filename = f"{DATA_FOLDER}/{user['username']}_matches.json"
       self.log.info(f"Requesting matches for {user['username']}")
 
-      # hacemos el request
+      # requesting
       url = self.cfg['apiStatsGetter']['matchesURL'].format(user_id=user['user_id'])
       matches_response = requests.get(url, headers=self.cfg['apiHeaders'])
       matches_actual_dict = json.loads(matches_response.text)
@@ -94,21 +94,21 @@ class APIStatsGetter(TaskThread):
         continue
 
       try:
-        # cargamos la historia de partidas, si peta, el try lo llevará
-        # a la parte de código que crea el nuevo data file
+        # load matches history, if throw an exception, 
+        # make the new matches history file
         with open(filename, 'r') as f:
           matches_history_dict = json.loads(f.read())
 
         new_matches = 0
-        # recorremos el array de partidas que hemos recibido con el request
+        # loop through the received matches array
         for match in matches_actual_dict:
           gotit = False
-          # recorremos las partidas del history para comparar con las que hemos recibido
+          # loop through matches history array to compare with received ones
           for history_match in matches_history_dict:
             if match['id'] == history_match['id']:
               gotit = True
               break
-          # si no la hemos encontrado en la historia, la añadimos
+          # if we didn't find it, we add it to the list
           if not gotit:
             new_matches += 1
             matches_history_dict.insert(0,match)
@@ -120,7 +120,7 @@ class APIStatsGetter(TaskThread):
         else:
           self.log.info("No new matches")
       except FileNotFoundError:
-        # No se ha encontrado el fichero, asi que lo creamos con los datos recibidos
+        # File not found, so we create the new one
         self.log.info("History not found. Creating new file")
         with open(filename, 'w') as f:
           json.dump(matches_actual_dict, f)
