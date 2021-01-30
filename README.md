@@ -5,8 +5,8 @@ Stats and tools for fortnitetracker.com
 ## Setup
 
 * Clone the repo
-* Copy `sample/config` as `config`
-* Edit `config.json`
+* Copy the `sample/config` folder in the main repo folder as `config`
+* Edit `config/config.json`
 * Build the Docker image with `docker-compose build`
 
 ### config.json
@@ -44,7 +44,8 @@ Stats and tools for fortnitetracker.com
         "active": true,
         "profileURL": "https://api.fortnitetracker.com/v1/profile/{platform}/{trn_username}",
         "matchesURL": "https://api.fortnitetracker.com/v1/profile/account/{user_id}/matches",
-        "requestDelay": 100
+        "statsUpdateDelay": 100,
+        "requestDelay": 2
     }
 }
 ```
@@ -66,6 +67,7 @@ Stats and tools for fortnitetracker.com
     * `trackerURL`: TO-DO: add desc
     * `profileURL`: TO-DO: add desc
     * `matchesURL`: TO-DO: add desc
+    * `statsUpdateDelay`: TO-DO: add desc
     * `requestDelay`: TO-DO: add desc
 
 
