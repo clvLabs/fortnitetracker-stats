@@ -3,7 +3,7 @@
         {
             "username": "first_user",
             "trn_username": "first_user",
-            "platform": "kbd"
+            "platform": "kbm"
         },
         {
             "username": "other_user_not_epic",
@@ -13,7 +13,7 @@
         {
             "username": "third_user",
             "trn_username": "third_user",
-            "platform": "gamepad"
+            "platform": "touch"
         }
     ],
     "profilePinger": {
