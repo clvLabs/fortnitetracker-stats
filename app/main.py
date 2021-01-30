@@ -44,13 +44,18 @@ logger.info("Loading config")
 with open(CONFIG_FILE) as f:
     cfg = json.load(f)
 
-pinger = ProfilePinger(cfg)
-pinger.start()
+if cfg['profilePinger']['active']:
+  pinger = ProfilePinger(cfg)
+  pinger.start()
+  time.sleep(1) # Allow a clean startup in the logs :)
+else:
+  logger.warning("Skipping ProfilePinger (deactivated)")
 
-time.sleep(1) # Allow a clean startup in the logs :)
-
-stats = APIStatsGetter(cfg)
-stats.start()
+if cfg['apiStatsGetter']['active']:
+  stats = APIStatsGetter(cfg)
+  stats.start()
+else:
+  logger.warning("Skipping APIStatsGetter (deactivated)")
 
 # While web service is not added we need a loop...
 while True:

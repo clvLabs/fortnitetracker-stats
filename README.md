@@ -31,6 +31,7 @@ Stats and tools for fortnitetracker.com
         }
     ],
     "profilePinger": {
+        "active": true,
         "trackerURL": "https://fortnitetracker.com/profile/all/{user}/matches",
         "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={ip}",
         "requestDelay": 0.5,
@@ -40,6 +41,7 @@ Stats and tools for fortnitetracker.com
         "TRN-Api-Key": "add_here_your_api_key"
     },
     "apiStatsGetter": {
+        "active": true,
         "trackerURL": "https://api.fortnitetracker.com/v1/",
         "profileURL": "https://api.fortnitetracker.com/v1/profile/{platform}/{trn_username}",
         "matchesURL": "https://api.fortnitetracker.com/v1/profile/account/{user_id}/matches",
@@ -52,6 +54,7 @@ Stats and tools for fortnitetracker.com
     * `trn_username`: TO-DO: add desc
     * `platform`: TO-DO: add desc
 * `profilePinger`: settings for the _pinger_
+    * `active`: is the module active?
     * `trackerURL`: TO-DO: add desc
     * `notificationsURL`: TO-DO: add desc
     * `requestDelay`: TO-DO: add desc
@@ -59,6 +62,7 @@ Stats and tools for fortnitetracker.com
 * `apiHeaders`: TO-DO: add desc
     * `TRN-Api-Key`: TO-DO: add desc
 * `apiStatsGetter`: settings for the _stats getter_
+    * `active`: is the module active?
     * `trackerURL`: TO-DO: add desc
     * `profileURL`: TO-DO: add desc
     * `matchesURL`: TO-DO: add desc

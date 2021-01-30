@@ -17,6 +17,7 @@
         }
     ],
     "profilePinger": {
+        "active": true,
         "trackerURL": "https://fortnitetracker.com/profile/all/{user}/matches",
         "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={ip}",
         "requestDelay": 0.5,
@@ -26,7 +27,7 @@
         "TRN-Api-Key": "add_here_your_api_key"
     },
     "apiStatsGetter": {
-        "trackerURL": "https://api.fortnitetracker.com/v1/",
+        "active": true,
         "profileURL": "https://api.fortnitetracker.com/v1/profile/{platform}/{trn_username}",
         "matchesURL": "https://api.fortnitetracker.com/v1/profile/account/{user_id}/matches",
         "requestDelay": 100
