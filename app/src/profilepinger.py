@@ -32,25 +32,35 @@ class ProfilePinger(TaskThread):
     self.log.info(f" - Profile delay : {self.cfg['profilePinger']['profileUpdateDelay']}s")
 
 
+  def waitBetweenRequests(self):
+    return self._threadsleep(self.cfg['profilePinger']['requestDelay'])
+
+
+  def requestPage(self, url):
+    response = requests.get(url)
+    if response.status_code != 200:
+      self.log.warning(f"HTTP status {response.status_code}")
+
+    return self.waitBetweenRequests()
+
+
   def mainLoop(self):
     self.log.info("New profile update --------------------------------")
 
     for user in self.cfg['profiles']:
+      username = user['username']
+      trn_username = user['trn_username']
+      trackerUrl = self.cfg['profilePinger']['trackerURL']
+      notificationsUrl = self.cfg['profilePinger']['notificationsURL']
 
-        self.log.info(f"[{user['username']}] Requesting tracker page")
-        url = self.cfg['profilePinger']['trackerURL'].format(trn_username=user['trn_username'])
-        response = requests.get(url)
-        if response.status_code != 200:
-          self.log.warning(f"HTTP status {response.status_code}")
-        if not self._threadsleep(self.cfg['profilePinger']['requestDelay']):
-          return
+      self.log.info(f"[{username}] Requesting tracker page")
+      url = trackerUrl.format(trn_username=trn_username)
+      if not self.requestPage(url):
+        return
 
-        self.log.info(f"[{user['username']}] Requesting notification page")
-        url = self.cfg['profilePinger']['notificationsURL'].format(public_ip=self.public_ip)
-        response = requests.get(url)
-        if response.status_code != 200:
-          self.log.warning(f"HTTP status {response.status_code}")
-        if not self._threadsleep(self.cfg['profilePinger']['requestDelay']):
-          return
+      self.log.info(f"[{username}] Requesting notification page")
+      url = notificationsUrl.format(public_ip=self.public_ip)
+      if not self.requestPage(url):
+        return
 
     self._threadsleep(self.cfg['profilePinger']['profileUpdateDelay'])
