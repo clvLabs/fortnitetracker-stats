@@ -15,8 +15,8 @@ class ProfilePinger(TaskThread):
     self.updateConfig(cfg, initialUpdate=True)
 
     self.log.info(f"Getting public IP")
-    self.publicIP = requests.get("https://api.ipify.org/?format=json").json()['ip']
-    self.log.info(f"Public IP: {self.publicIP}")
+    self.public_ip = requests.get("https://api.ipify.org/?format=json").json()['ip']
+    self.log.info(f"Public IP: {self.public_ip}")
 
 
   def updateConfig(self, cfg, initialUpdate=False):
@@ -38,14 +38,16 @@ class ProfilePinger(TaskThread):
     for user in self.cfg['profiles']:
 
         self.log.info(f"[{user['username']}] Requesting tracker page")
-        response = requests.get(self.cfg['profilePinger']['trackerURL'].format(user=user['trn_username']))
+        url = self.cfg['profilePinger']['trackerURL'].format(trn_username=user['trn_username'])
+        response = requests.get(url)
         if response.status_code != 200:
           self.log.warning(f"HTTP status {response.status_code}")
         if not self._threadsleep(self.cfg['profilePinger']['requestDelay']):
           return
 
         self.log.info(f"[{user['username']}] Requesting notification page")
-        response = requests.get(self.cfg['profilePinger']['notificationsURL'].format(ip=self.publicIP))
+        url = self.cfg['profilePinger']['notificationsURL'].format(public_ip=self.public_ip)
+        response = requests.get(url)
         if response.status_code != 200:
           self.log.warning(f"HTTP status {response.status_code}")
         if not self._threadsleep(self.cfg['profilePinger']['requestDelay']):
