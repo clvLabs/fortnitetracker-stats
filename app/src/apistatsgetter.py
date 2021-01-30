@@ -48,10 +48,13 @@ class APIStatsGetter(TaskThread):
     else:
       return None
 
+  def waitBetweenRequests(self):
+    return self._threadsleep(self.cfg['apiStatsGetter']['requestDelay'])
 
   def get_user_profile(self, trn_user, platform):
     url = self.cfg['apiStatsGetter']['profileURL'].format(platform=platform, trn_username=trn_user)
     profile_response = requests.get(url, headers = self.cfg['apiHeaders'])
+
     try:
       profile_response_dict = json.loads(profile_response.text)
     except:
@@ -65,6 +68,7 @@ class APIStatsGetter(TaskThread):
       self.log.error(f"Response: {profile_response_dict}")
       self.log.error(f"User {trn_user} will be IGNORED")
       return None
+    self.waitBetweenRequests()
 
 
   def mainLoop(self):
@@ -124,8 +128,10 @@ class APIStatsGetter(TaskThread):
         self.log.info("History not found. Creating new file")
         with open(filename, 'w') as f:
           json.dump(matches_actual_dict, f)
+      
+      self.waitBetweenRequests()
     # # #
 
     self.log.info("Api stats update FINISHED --------------------------------")
 
-    self._threadsleep(self.cfg['apiStatsGetter']['requestDelay'])
+    self._threadsleep(self.cfg['apiStatsGetter']['statsUpdateDelay'])

@@ -30,6 +30,7 @@
         "active": true,
         "profileURL": "https://api.fortnitetracker.com/v1/profile/{platform}/{trn_username}",
         "matchesURL": "https://api.fortnitetracker.com/v1/profile/account/{user_id}/matches",
-        "requestDelay": 100
+        "statsUpdateDelay": 100,
+        "requestDelay": 2
     }
 }
