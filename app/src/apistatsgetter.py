@@ -24,7 +24,7 @@ class APIStatsGetter():
 
     if self.threadrunning:
       return
-    
+
     # We grab the users_ids and retain until next start
     self.fill_users_id()
 
@@ -55,20 +55,24 @@ class APIStatsGetter():
 
     self.log.info(f" - Request delay : {self.cfg['apiStatsGetter']['requestDelay']}s")
 
+
   def fill_users_id(self):
     for user in self.cfg['profiles']:
       self.log.info(f"[{user['trn_username']}] Requesting profile data")
       user['user_id'] = self.get_user_id(user['trn_username'], user['platform'])
 
+
   def get_user_id(self, trn_user, platform):
     profile_response_dict = self.get_user_profile(trn_user, platform)
     return profile_response_dict['accountId']
+
 
   def get_user_profile(self, trn_user, platform):
     profile_response = requests.get(self.cfg['apiStatsGetter']['profileURL'].format(platform=platform, trn_username=trn_user), headers = self.cfg['apiHeaders'])
     profile_response_dict = json.loads(profile_response.text)
     return profile_response_dict
-  
+
+
   # [ Private methods ] #################################################################
 
   def _threadsleep(self, seconds):
@@ -82,12 +86,9 @@ class APIStatsGetter():
 
     return True # Wait finished, continue working
 
-
   def _threadhandler(self):
     while self.threadrunning:
       self.log.info("New api stats update --------------------------------")
-
-      # Fill this with beautiful code   :-p
 
       # Recorremos el array de profiles de los que tenemos que recopilar datos
       for user in self.cfg['profiles']:
@@ -96,7 +97,7 @@ class APIStatsGetter():
         self.log.info(f"Requesting matches for {user['username']}")
         # hacemos el request
         matches_response = requests.get(
-                            self.cfg['apiStatsGetter']['matchesURL'].format(user_id=user['user_id']), 
+                            self.cfg['apiStatsGetter']['matchesURL'].format(user_id=user['user_id']),
                             headers=self.cfg['apiHeaders'])
         matches_actual_dict = json.loads(matches_response.text)
 
@@ -105,7 +106,7 @@ class APIStatsGetter():
           # a la parte de código que crea el nuevo data file
           with open(filename, 'r') as f:
             matches_history_dict = json.loads(f.read())
-          
+
           new_matches = 0
           # recorremos el array de partidas que hemos recibido con el request
           for match in matches_actual_dict:
@@ -119,7 +120,7 @@ class APIStatsGetter():
             if not gotit:
               new_matches += 1
               matches_history_dict.insert(0,match)
-          
+
           if new_matches > 0:
             self.log.info(f"Added {str(new_matches)} new matches")
             with open(filename, 'w') as f:
