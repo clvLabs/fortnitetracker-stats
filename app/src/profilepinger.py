@@ -63,4 +63,6 @@ class ProfilePinger(TaskThread):
       if not self.requestPage(url):
         return
 
+    self.log.info("Profile update FINISHED --------------------------------")
+
     self._threadsleep(self.cfg['profilePinger']['profileUpdateDelay'])

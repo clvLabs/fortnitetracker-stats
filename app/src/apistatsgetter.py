@@ -126,4 +126,6 @@ class APIStatsGetter(TaskThread):
           json.dump(matches_actual_dict, f)
     # # #
 
+    self.log.info("Api stats update FINISHED --------------------------------")
+
     self._threadsleep(self.cfg['apiStatsGetter']['requestDelay'])
