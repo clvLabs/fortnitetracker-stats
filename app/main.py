@@ -4,6 +4,7 @@ import signal
 import time
 import logging
 import json
+from pprint import pformat
 
 from src.profilepinger import ProfilePinger
 from src.apistatsgetter import APIStatsGetter
@@ -68,6 +69,9 @@ registerExitSignals()
 logger.info("Loading config")
 with open(CONFIG_FILE) as f:
     cfg = json.load(f)
+
+logger.info(f"Config:\n{pformat(cfg, indent=4)}")
+
 
 logger.info("Initializing tasks")
 pinger = ProfilePinger(cfg)
