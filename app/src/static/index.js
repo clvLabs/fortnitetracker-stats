@@ -20,10 +20,11 @@ function loadConfiguredProfiles() {
     }
 
     function onSuccess(data) {
-        profilesHTML = ""
+        profilesHTML = "<ul>"
         for (profile of data.profiles) {
-            profilesHTML += `${profile.username}<br/>`
+            profilesHTML += `<li>${profile.username}</li>`
         }
+        profilesHTML += "</ul>"
         $('#profiles-div').html(profilesHTML)
     }
 
