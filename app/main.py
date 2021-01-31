@@ -47,7 +47,6 @@ with open(CONFIG_FILE) as f:
 if cfg['profilePinger']['active']:
     pinger = ProfilePinger(cfg)
     pinger.start()
-    time.sleep(1) # Allow a clean startup in the logs :)
 else:
     logger.warning("Skipping ProfilePinger (deactivated)")
 
