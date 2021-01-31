@@ -35,6 +35,8 @@ $ nano config/config.json
 * Build the container: `scripts/build.sh`
 * Get a bash shell in the service container: `scripts/shell.sh`
 
+NOTE: some of these scripts show the _live_ logs of the service after finishing. To stop viewing logs, press `CTRL+C`. Don't worry, the service will continue running on the background :)
+
 ## Web service
 
 This service exposes a web server on the HTTP port configured as `webServer.servicePort` in the config file.
