@@ -30,45 +30,52 @@ Stats and tools for fortnitetracker.com
             "platform": "touch"
         }
     ],
-    "profilePinger": {
-        "active": true,
+    "fortniteTracker": {
+        "api": {
+            "key": "add_your_api_key_here",
+            "requestDelay": 0,
+            "baseUrl": "https://api.fortnitetracker.com/v1",
+            "paths": {
+                "profile": "profile/{platform}/{trn_username}",
+                "matches": "profile/account/{user_id}/matches"
+            }
+        },
         "trackerURL": "https://fortnitetracker.com/profile/all/{trn_username}/matches",
-        "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={public_ip}",
-        "requestDelay": 0.5,
-        "profileUpdateDelay": 300
+        "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={public_ip}"
     },
-    "apiHeaders": {
-        "TRN-Api-Key": "add_here_your_api_key"
+    "profilePinger": {
+        "active": false,
+        "profileUpdateDelay": 300
     },
     "apiStatsGetter": {
         "active": true,
-        "profileURL": "https://api.fortnitetracker.com/v1/profile/{platform}/{trn_username}",
-        "matchesURL": "https://api.fortnitetracker.com/v1/profile/account/{user_id}/matches",
-        "statsUpdateDelay": 100,
-        "requestDelay": 2
+        "statsUpdateDelay": 100
     }
 }
 ```
 
 * `profiles`: list of profiles to be checked
-    * `username`: TO-DO: add desc
-    * `trn_username`: TO-DO: add desc
-    * `platform`: TO-DO: add desc
-* `profilePinger`: settings for the _pinger_
+    * `username`: User name
+    * `trn_username`: [TRN](https://fortnitetracker.com/article/23/trn-rating-you) username
+    * `platform`: User platform
+        * Accepted values:
+            * `kbm`
+            * `gamepad`
+            * `touch`
+* `fortniteTracker`: fortnitetracker.com settings
+    * `api`: api section
+        * `key`: api key
+        * `requestDelay`: delay between requests
+        * `baseUrl`: base url
+        * `paths`: path list
+            * `profile`: profile path
+            * `matches`: matches path
+* `profilePinger`: settings for the _profile pinger_
     * `active`: is the module active?
-    * `trackerURL`: TO-DO: add desc
-    * `notificationsURL`: TO-DO: add desc
-    * `requestDelay`: TO-DO: add desc
-    * `profileUpdateDelay`: TO-DO: add desc
-* `apiHeaders`: TO-DO: add desc
-    * `TRN-Api-Key`: TO-DO: add desc
+    * `profileUpdateDelay`: time between _pings_
 * `apiStatsGetter`: settings for the _stats getter_
     * `active`: is the module active?
-    * `trackerURL`: TO-DO: add desc
-    * `profileURL`: TO-DO: add desc
-    * `matchesURL`: TO-DO: add desc
-    * `statsUpdateDelay`: TO-DO: add desc
-    * `requestDelay`: TO-DO: add desc
+    * `statsUpdateDelay`: time between _gets_
 
 
 ## Usage

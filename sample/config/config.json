@@ -16,21 +16,25 @@
             "platform": "touch"
         }
     ],
-    "profilePinger": {
-        "active": true,
+    "fortniteTracker": {
+        "api": {
+            "key": "add_your_api_key_here",
+            "requestDelay": 0,
+            "baseUrl": "https://api.fortnitetracker.com/v1",
+            "paths": {
+                "profile": "profile/{platform}/{trn_username}",
+                "matches": "profile/account/{user_id}/matches"
+            }
+        },
         "trackerURL": "https://fortnitetracker.com/profile/all/{trn_username}/matches",
-        "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={public_ip}",
-        "requestDelay": 0.5,
-        "profileUpdateDelay": 300
+        "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={public_ip}"
     },
-    "apiHeaders": {
-        "TRN-Api-Key": "add_here_your_api_key"
+    "profilePinger": {
+        "active": false,
+        "profileUpdateDelay": 300
     },
     "apiStatsGetter": {
         "active": true,
-        "profileURL": "https://api.fortnitetracker.com/v1/profile/{platform}/{trn_username}",
-        "matchesURL": "https://api.fortnitetracker.com/v1/profile/account/{user_id}/matches",
-        "statsUpdateDelay": 100,
-        "requestDelay": 2
+        "statsUpdateDelay": 100
     }
 }
