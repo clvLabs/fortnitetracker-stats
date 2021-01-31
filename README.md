@@ -4,6 +4,7 @@ Stats and tools for fortnitetracker.com
 
 ## Setup
 
+* Make sure you have [docker](https://docs.docker.com/engine//) and [docker-compose](https://docs.docker.com/compose/) installed on your system
 * Clone the project repo
 ```
 $ git clone https://github.com/clvLabs/fortnitetracker-stats.git
