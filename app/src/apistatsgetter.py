@@ -26,29 +26,34 @@ class APIStatsGetter(TaskThread):
 
     def fill_users_id(self):
         for user in self.cfg['profiles']:
-            self.log.info(f"[{user['username']}] Requesting profile data")
-            user_id = self.get_user_id(user['trn_username'], user['platform'])
+            username = user['username']
+            self.log.info(f"[{username}] Requesting profile data")
+            user_id = self.get_user_id(user)
             if user_id:
-                self.log.info(f"[{user['username']}] Profile data received")
+                self.log.info(f"[{username}] Profile data received")
                 user['user_id'] = user_id
             else:
-                self.log.warning(f"User {user['username']} will be IGNORED")
+                self.log.warning(f"[{username}] User will be IGNORED")
 
 
-    def get_user_id(self, trn_username, platform):
-        profile = self.get_user_profile(trn_username, platform)
+    def get_user_id(self, user):
+        profile = self.get_user_profile(user)
         if profile:
             return profile['accountId']
         else:
             return None
 
 
-    def get_user_profile(self, trn_username, platform):
+    def get_user_profile(self, user):
+        username = user['username']
+        trn_username = user['trn_username']
+        platform = user['platform']
+
         profile = self.tracker.getUserProfile(trn_username, platform)
         if profile:
             return profile
         else:
-            self.log.warning(f"Can't get profile info for {trn_username} - platform {platform}")
+            self.log.warning(f"[{username}] Can't get profile info for {trn_username} - platform {platform}")
             return None
 
 
@@ -62,16 +67,19 @@ class APIStatsGetter(TaskThread):
             if not 'user_id' in user:
                 continue
 
+            username = user['username']
+            user_id = user['user_id']
+
             # path to data file
-            filename = f"{DATA_FOLDER}/{user['username']}_matches.json"
-            self.log.info(f"Requesting matches for {user['username']}")
+            filename = f"{DATA_FOLDER}/{username}_matches.json"
+            self.log.info(f"[{username}] Requesting matches")
 
             # requesting
-            matches_actual_dict = self.tracker.getUserMatches(user['user_id'])
+            matches_actual_dict = self.tracker.getUserMatches(user_id)
 
             # Make sure we have a valid response
             if not matches_actual_dict:
-                self.log.warning(f"SKIPPING {user['username']}")
+                self.log.warning(f"[{username}] Can't get matches")
                 continue
 
             try:
@@ -95,20 +103,19 @@ class APIStatsGetter(TaskThread):
                         matches_history_dict.insert(0, match)
 
                 if new_matches > 0:
-                    self.log.info(f"Added {str(new_matches)} new matches")
+                    self.log.info(f"[{username}] Added {str(new_matches)} new matches")
                     with open(filename, 'w') as f:
                         json.dump(matches_history_dict, f)
                 else:
-                    self.log.info("No new matches")
+                    self.log.info(f"[{username}] No new matches")
             except FileNotFoundError:
                 # File not found, so we create the new one
-                self.log.info("History not found. Creating new file")
+                self.log.info(f"[{username}] History not found. Creating new file")
                 with open(filename, 'w') as f:
                     json.dump(matches_actual_dict, f)
 
         # # #
 
-        self.log.info(
-            "Api stats update FINISHED --------------------------------")
+        self.log.info("Api stats update FINISHED --------------------------------")
 
         self._threadsleep(self.cfg['apiStatsGetter']['statusGetInterval'])
