@@ -30,11 +30,11 @@
         "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={public_ip}"
     },
     "profilePinger": {
-        "active": false,
+        "enabled": true,
         "profilePingInterval": 300
     },
     "apiStatsGetter": {
-        "active": true,
+        "enabled": true,
         "statusGetInterval": 100
     }
 }

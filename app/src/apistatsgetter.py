@@ -25,10 +25,10 @@ class APIStatsGetter(TaskThread):
 
 
     def start(self):
-        if self.cfg['apiStatsGetter']['active']:
+        if self.cfg['apiStatsGetter']['enabled']:
             super().start()
         else:
-            self.log.warning("Skipping start (deactivated)")
+            self.log.warning("Skipping start (disabled in config)")
 
 
     def fill_users_id(self):

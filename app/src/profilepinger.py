@@ -22,10 +22,10 @@ class ProfilePinger(TaskThread):
 
 
     def start(self):
-        if self.cfg['profilePinger']['active']:
+        if self.cfg['profilePinger']['enabled']:
             super().start()
         else:
-            self.log.warning("Skipping start (deactivated)")
+            self.log.warning("Skipping start (disabled in config)")
 
 
     def mainLoop(self):

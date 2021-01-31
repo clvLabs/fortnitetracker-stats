@@ -35,11 +35,11 @@ The `config.json` file contains the app settings:
         "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={public_ip}"
     },
     "profilePinger": {
-        "active": false,
+        "enabled": false,
         "profilePingInterval": 300
     },
     "apiStatsGetter": {
-        "active": true,
+        "enabled": true,
         "statusGetInterval": 100
     }
 }
@@ -62,8 +62,8 @@ The `config.json` file contains the app settings:
             * `profile`: profile path
             * `matches`: matches path
 * `profilePinger`: settings for the _profile pinger_
-    * `active`: is the module active?
+    * `enabled`: is the task enabled?
     * `profilePingInterval`: time between _pings_
 * `apiStatsGetter`: settings for the _stats getter_
-    * `active`: is the module active?
+    * `enabled`: is the task enabled?
     * `statusGetInterval`: time between _gets_
