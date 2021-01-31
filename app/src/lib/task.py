@@ -4,15 +4,15 @@ import time
 import threading
 
 
-class TaskThread():
+class Task():
 
     def __init__(self, cfg):
-        self.log = logging.getLogger('TaskThread')
+        self.log = logging.getLogger('Task')
 
         self.updateConfig(cfg)
 
-        self.thread = None          # Thread object
-        self.threadrunning = False  # Is the thread running?
+        self.thread = None
+        self.running = False
         self.stopRequested = False
 
 
@@ -21,13 +21,13 @@ class TaskThread():
 
 
     def start(self):
-        if self.threadrunning:
+        if self.running:
             self.log.warning("Task already started")
             return
 
         try:
             self.log.info("Starting task")
-            self.threadrunning = True
+            self.running = True
             self.stopRequested = False
             self.thread = threading.Thread(target=self._threadhandler, args=())
             self.thread.start()
@@ -36,7 +36,7 @@ class TaskThread():
 
 
     def stop(self):
-        if not self.threadrunning:
+        if not self.running:
             self.log.warning("Task not started")
             return
 
@@ -62,7 +62,7 @@ class TaskThread():
         while not self.stopRequested:
             self.taskLoop()
 
-        self.threadrunning = False
+        self.running = False
 
 
     def taskSetup(self):

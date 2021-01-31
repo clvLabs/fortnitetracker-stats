@@ -4,13 +4,13 @@ from typing import List
 import requests
 import json
 
-from src.lib.taskthread import TaskThread
+from src.lib.task import Task
 from src.lib.fortnitetracker import FortniteTracker
 
 DATA_FOLDER = "/fortnitetracker-stats/data"
 
 
-class APIStatsGetter(TaskThread):
+class APIStatsGetter(Task):
 
     def __init__(self, cfg):
         super().__init__(cfg)
@@ -20,7 +20,7 @@ class APIStatsGetter(TaskThread):
 
 
     def start(self):
-        ''' Override of TaskThread.start() '''
+        ''' Override of Task.start() '''
         if not self.cfg['apiStatsGetter']['enabled']:
             self.log.warning("Skipping start (disabled in config)")
             return
@@ -29,7 +29,7 @@ class APIStatsGetter(TaskThread):
 
 
     def stop(self):
-        ''' Override of TaskThread.stop() '''
+        ''' Override of Task.stop() '''
         self.tracker.stop()
         super().stop()
 
@@ -76,7 +76,7 @@ class APIStatsGetter(TaskThread):
 
 
     def taskSetup(self):
-        ''' Override of TaskThread.taskSetup() '''
+        ''' Override of Task.taskSetup() '''
         self.log.info("Task setup")
         # Grab the users_ids and retain until next start
         self.log.info(f"Getting user IDs")
@@ -85,7 +85,7 @@ class APIStatsGetter(TaskThread):
 
 
     def taskLoop(self):
-        ''' Override of TaskThread.taskLoop() '''
+        ''' Override of Task.taskLoop() '''
         self.log.info("New api stats update --------------------------------")
 
         # loop through the profiles array

@@ -2,11 +2,11 @@
 import logging
 import requests
 
-from src.lib.taskthread import TaskThread
+from src.lib.task import Task
 from src.lib.fortnitetracker import FortniteTracker
 
 
-class ProfilePinger(TaskThread):
+class ProfilePinger(Task):
 
     def __init__(self, cfg):
         super().__init__(cfg)
@@ -16,7 +16,7 @@ class ProfilePinger(TaskThread):
 
 
     def start(self):
-        ''' Override of TaskThread.start() '''
+        ''' Override of Task.start() '''
         if not self.cfg['profilePinger']['enabled']:
             self.log.warning("Skipping start (disabled in config)")
             return
@@ -25,13 +25,13 @@ class ProfilePinger(TaskThread):
 
 
     def stop(self):
-        ''' Override of TaskThread.stop() '''
+        ''' Override of Task.stop() '''
         self.tracker.stop()
         super().stop()
 
 
     def taskSetup(self):
-        ''' Override of TaskThread.taskSetup() '''
+        ''' Override of Task.taskSetup() '''
         self.log.info("Task setup")
         self.log.info(f"Getting public IP")
         self.public_ip = requests.get("https://api.ipify.org/?format=json").json()['ip']
@@ -40,7 +40,7 @@ class ProfilePinger(TaskThread):
 
 
     def taskLoop(self):
-        ''' Override of TaskThread.taskLoop() '''
+        ''' Override of Task.taskLoop() '''
         self.log.info("New profile update --------------------------------")
 
         for user in self.cfg['profiles']:
