@@ -30,8 +30,6 @@ $ nano config/config.json
 $ scripts/build.sh
 ```
 
-
-
 ## Usage
 
 * Start the service: `scripts/start.sh`
@@ -49,5 +47,6 @@ $ scripts/build.sh
 * Run container with code mapped to local copy (with restart on changes): `dev/devwatch.sh`
 * Restart container: `dev/restart.sh`
 * Stop container: `dev/stop.sh`
+* Kill container: `dev/kill.sh`
 * Run a container starting with a bash shell: `dev/shell.sh`
 * Get a bash shell in a running container: `docker exec -it fortnitetracker-stats bash`
