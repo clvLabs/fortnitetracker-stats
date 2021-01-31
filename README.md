@@ -45,11 +45,11 @@ Stats and tools for fortnitetracker.com
     },
     "profilePinger": {
         "active": false,
-        "profileUpdateDelay": 300
+        "profilePingInterval": 300
     },
     "apiStatsGetter": {
         "active": true,
-        "statsUpdateDelay": 100
+        "statusGetInterval": 100
     }
 }
 ```
@@ -72,10 +72,10 @@ Stats and tools for fortnitetracker.com
             * `matches`: matches path
 * `profilePinger`: settings for the _profile pinger_
     * `active`: is the module active?
-    * `profileUpdateDelay`: time between _pings_
+    * `profilePingInterval`: time between _pings_
 * `apiStatsGetter`: settings for the _stats getter_
     * `active`: is the module active?
-    * `statsUpdateDelay`: time between _gets_
+    * `statusGetInterval`: time between _gets_
 
 
 ## Usage

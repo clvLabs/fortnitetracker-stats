@@ -111,4 +111,4 @@ class APIStatsGetter(TaskThread):
         self.log.info(
             "Api stats update FINISHED --------------------------------")
 
-        self._threadsleep(self.cfg['apiStatsGetter']['statsUpdateDelay'])
+        self._threadsleep(self.cfg['apiStatsGetter']['statusGetInterval'])

@@ -31,10 +31,10 @@
     },
     "profilePinger": {
         "active": false,
-        "profileUpdateDelay": 300
+        "profilePingInterval": 300
     },
     "apiStatsGetter": {
         "active": true,
-        "statsUpdateDelay": 100
+        "statusGetInterval": 100
     }
 }

@@ -36,4 +36,4 @@ class ProfilePinger(TaskThread):
 
         self.log.info("Profile update FINISHED --------------------------------")
 
-        self._threadsleep(self.cfg['profilePinger']['profileUpdateDelay'])
+        self._threadsleep(self.cfg['profilePinger']['profilePingInterval'])
