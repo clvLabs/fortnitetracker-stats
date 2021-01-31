@@ -15,19 +15,14 @@ $ git clone https://github.com/clvLabs/fortnitetracker-stats.git
 $ cd fortnitetracker-stats
 ```
 
-* Copy the `sample/config` folder as `config`
+* Run the setup script
 ```
-$ cp -r sample/config ./config
+$ scripts/setup.sh
 ```
 
 * Edit `config/config.json` ([more info](sample/config/config.md))
 ```
 $ nano config/config.json
-```
-
-* Build the Docker image
-```
-$ scripts/build.sh
 ```
 
 ## Usage
