@@ -1,2 +1,2 @@
 #!/bin/bash
-dev/run.sh --entrypoint $DOCKER_APP_PATH/scripts/shell.sh
+dev/run.sh --entrypoint /fortnitetracker-stats/app/scripts/shell.sh
