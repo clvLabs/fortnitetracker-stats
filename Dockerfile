@@ -10,5 +10,5 @@ COPY app /fortnitetracker-stats/app
 RUN /fortnitetracker-stats/app/setup/scripts/setup.sh
 
 # Set default working dir & entry point
-WORKDIR /fortnitetracker-stats/app
-ENTRYPOINT ["scripts/start.sh"]
+WORKDIR /fortnitetracker-stats
+ENTRYPOINT ["/fortnitetracker-stats/app/scripts/start.sh"]
