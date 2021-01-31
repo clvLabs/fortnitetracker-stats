@@ -24,7 +24,7 @@ The `config.json` file contains the app settings:
     "fortniteTracker": {
         "api": {
             "key": "add_your_api_key_here",
-            "requestDelay": 0,
+            "requestDelay": 2,
             "baseUrl": "https://api.fortnitetracker.com/v1",
             "paths": {
                 "profile": "profile/{platform}/{trn_username}",
