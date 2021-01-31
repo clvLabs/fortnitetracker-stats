@@ -26,6 +26,8 @@ def _initRoutes():
     # ----------------------------------------------------------------------
     class Config(Resource):
         def get(self):
+            logger.debug("API hit: GET /api/v1/config")
+
             # Deep-copy json object
             configcopy = json.loads(json.dumps(cfg))
 

@@ -25,6 +25,8 @@ def _initRoutes():
     # ----------------------------------------------------------------------
     class Profiles(Resource):
         def get(self):
+            logger.debug("API hit: GET /api/v1/profiles")
+
             return jsonify({"profiles": cfg['profiles']})
 
     webapi.add_resource(Profiles, '/api/v1/profiles')
