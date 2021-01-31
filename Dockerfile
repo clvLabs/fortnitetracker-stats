@@ -7,7 +7,10 @@ RUN apt update
 COPY app /fortnitetracker-stats/app
 
 # Run app setup
-RUN /fortnitetracker-stats/app/setup/scripts/setup.sh
+RUN \
+    /fortnitetracker-stats/app/setup/scripts/setup.sh && \
+    rm -rf /fortnitetracker-stats/app/setup && \
+    true
 
 # Set default working dir & entry point
 WORKDIR /fortnitetracker-stats
