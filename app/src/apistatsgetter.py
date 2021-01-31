@@ -12,7 +12,7 @@ DATA_FOLDER = "/fortnitetracker-stats/data"
 class APIStatsGetter(TaskThread):
 
     def __init__(self, cfg):
-        super().__init__()
+        super().__init__(cfg)
 
         self.log = logging.getLogger('APIStatsGetter')
         self.log.info("Initializing")
@@ -21,16 +21,6 @@ class APIStatsGetter(TaskThread):
 
         # Grab the users_ids and retain until next start
         self.fill_users_id()
-
-
-    def updateConfig(self, cfg, initialUpdate=False):
-        self.cfg = cfg
-        if initialUpdate:
-            self.log.info("Configuration:")
-        else:
-            self.log.info("Configuration UPDATED:")
-
-        self.log.info(f" - Request delay : {self.cfg['apiStatsGetter']['requestDelay']}s")
 
 
     def fill_users_id(self):

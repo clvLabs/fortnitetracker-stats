@@ -6,11 +6,17 @@ import threading
 
 class TaskThread():
 
-    def __init__(self):
+    def __init__(self, cfg):
         self.log = logging.getLogger('TaskThread')
+
+        self.updateConfig(cfg)
 
         self.thread = None          # Thread object
         self.threadrunning = False  # Is the thread running?
+
+
+    def updateConfig(self, cfg):
+        self.cfg = cfg
 
 
     def start(self):
