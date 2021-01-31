@@ -41,6 +41,10 @@ The `config.json` file contains the app settings:
     "apiStatsGetter": {
         "enabled": true,
         "statusGetInterval": 100
+    },
+    "webServer": {
+        "enabled": true,
+        "servicePort": 80
     }
 }
 ```
@@ -67,3 +71,6 @@ The `config.json` file contains the app settings:
 * `apiStatsGetter`: settings for the _stats getter_
     * `enabled`: is the task enabled?
     * `statusGetInterval`: time between _gets_
+* `webServer`: settings for the web server
+    * `enabled`: is the task enabled?
+    * `servicePort`: HTTP port

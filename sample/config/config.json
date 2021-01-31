@@ -36,5 +36,9 @@
     "apiStatsGetter": {
         "enabled": true,
         "statusGetInterval": 100
+    },
+    "webServer": {
+        "enabled": true,
+        "servicePort": 80
     }
 }

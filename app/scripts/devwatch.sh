@@ -8,7 +8,7 @@ log "--- $(date)"
 log ""
 log "---[ starting app in dev watch mode ]-----------------------------"
 log ""
-find /fortnitetracker-stats/app -name "*.py" | entr -cr python3 -u /fortnitetracker-stats/app/main.py
+find /fortnitetracker-stats/app -name "*.py" -o  -name "*.html" | entr -cr python3 -u /fortnitetracker-stats/app/main.py
 
 log ""
 log "---[ FINISHED ]------------------------------------"

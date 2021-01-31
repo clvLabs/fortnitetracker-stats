@@ -8,6 +8,7 @@ from pprint import pformat
 
 from src.profilepinger import ProfilePinger
 from src.apistatsgetter import APIStatsGetter
+from src.webserver import WebServer
 
 CONFIG_FILE = "/fortnitetracker-stats/config/config.json"
 
@@ -25,6 +26,9 @@ def onSignal(signalNumber, frame):
 
     if stats:
         stats.stop()
+
+    if web:
+        web.stop()
 
     logger.warning('Task stop FINISHED - closing')
     sys.exit(0)
@@ -72,7 +76,6 @@ with open(CONFIG_FILE) as f:
 
 logger.info(f"Config:\n{pformat(cfg, indent=4)}")
 
-
 logger.info("Initializing tasks")
 pinger = ProfilePinger(cfg)
 pinger.start()
@@ -80,8 +83,5 @@ pinger.start()
 stats = APIStatsGetter(cfg)
 stats.start()
 
-logger.info("Initialization FINISHED")
-
-# Keep main thread alive
-while True:
-    time.sleep(100)
+web = WebServer(cfg)
+web.start()

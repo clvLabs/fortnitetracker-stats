@@ -20,7 +20,7 @@ $ cd fortnitetracker-stats
 $ scripts/setup.sh
 ```
 
-* Edit `config/config.json` ([more info](sample/config/config.md))
+* Edit `config/config.json` ([more info](docs/config.md))
 ```
 $ nano config/config.json
 ```
@@ -34,6 +34,16 @@ $ nano config/config.json
 * View service logs: `scripts/logs.sh`
 * Build the container: `scripts/build.sh`
 * Get a bash shell in the service container: `scripts/shell.sh`
+
+## Web service
+
+This service exposes a web server on the HTTP port configured as `webServer.servicePort` in the config file.
+
+### API endpoints
+
+REST API endpoints are available under the `/api/vi` route.
+
+[API documentation](docs/api.md)
 
 ## Development
 

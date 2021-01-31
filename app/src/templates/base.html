@@ -1,0 +1,35 @@
+<html>
+
+<head>
+  <title>{{ title }} - {{ appName }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=0.7, maximum-scale=2" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="icon" type="image/png" href="static/favicon.png" />
+  <link rel=stylesheet type=text/css href="static/lib/base.css">
+  <link rel=stylesheet type=text/css href="static/lib/checkbox.css">
+  <link rel=stylesheet type=text/css href="static/app.css">
+  <script src="static/lib/jquery-3.4.1.min.js"></script>
+  <script src="static/lib/toast.min.js"></script>
+  <script src="static/lib/toast-utils.js"></script>
+</head>
+
+<body>
+<div class="maindiv">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul class=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+  <h1>{{ appName }} - {{ title }}</h1>
+
+  {% block content %}{% endblock %}
+</div>
+</body>
+
+</html>
