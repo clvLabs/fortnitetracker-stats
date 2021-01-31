@@ -20,7 +20,7 @@ $ cd fortnitetracker-stats
 $ scripts/setup.sh
 ```
 
-* Edit `config/config.json` ([more info](docs/config.md))
+* Edit `config/config.json` ([config docs](docs/config.md))
 ```
 $ nano config/config.json
 ```
@@ -45,7 +45,7 @@ This service exposes a web server on the HTTP port configured as `webServer.serv
 
 REST API endpoints are available under the `/api/vi` route.
 
-[API documentation](docs/api.md)
+[API docs](docs/api.md)
 
 ## Development
 
