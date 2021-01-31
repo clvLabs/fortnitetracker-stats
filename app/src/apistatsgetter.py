@@ -14,21 +14,24 @@ class APIStatsGetter(TaskThread):
 
     def __init__(self, cfg):
         super().__init__(cfg)
-
         self.log = logging.getLogger('APIStatsGetter')
         self.log.info("Initializing")
-
         self.tracker = FortniteTracker(self.cfg, 'APIStatsGetter')
-
-        # Grab the users_ids and retain until next start
-        self.fill_users_id()
 
 
     def start(self):
-        if self.cfg['apiStatsGetter']['enabled']:
-            super().start()
-        else:
+        ''' Override of TaskThread.start() '''
+        if not self.cfg['apiStatsGetter']['enabled']:
             self.log.warning("Skipping start (disabled in config)")
+            return
+
+        super().start()
+
+
+    def stop(self):
+        ''' Override of TaskThread.stop() '''
+        self.tracker.stop()
+        super().stop()
 
 
     def fill_users_id(self):
@@ -36,6 +39,10 @@ class APIStatsGetter(TaskThread):
             username = user['username']
             self.log.info(f"[{username}] Requesting profile data")
             user_id = self.get_user_id(user)
+
+            if self.stopRequested:
+                return
+
             if user_id:
                 self.log.info(f"[{username}] Profile data received")
                 user['user_id'] = user_id
@@ -57,6 +64,10 @@ class APIStatsGetter(TaskThread):
         platform = user['platform']
 
         profile = self.tracker.getUserProfile(trn_username, platform)
+
+        if self.stopRequested:
+            return None
+
         if profile:
             return profile
         else:
@@ -64,7 +75,17 @@ class APIStatsGetter(TaskThread):
             return None
 
 
-    def mainLoop(self):
+    def taskSetup(self):
+        ''' Override of TaskThread.taskSetup() '''
+        self.log.info("Task setup")
+        # Grab the users_ids and retain until next start
+        self.log.info(f"Getting user IDs")
+        self.fill_users_id()
+        self.log.info("Task setup FINISHED")
+
+
+    def taskLoop(self):
+        ''' Override of TaskThread.taskLoop() '''
         self.log.info("New api stats update --------------------------------")
 
         # loop through the profiles array
@@ -83,6 +104,9 @@ class APIStatsGetter(TaskThread):
 
             # requesting
             matches_actual_dict = self.tracker.getUserMatches(user_id)
+
+            if self.stopRequested:
+                return
 
             # Make sure we have a valid response
             if not matches_actual_dict:

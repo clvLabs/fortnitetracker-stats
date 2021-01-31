@@ -13,6 +13,7 @@ class TaskThread():
 
         self.thread = None          # Thread object
         self.threadrunning = False  # Is the thread running?
+        self.stopRequested = False
 
 
     def updateConfig(self, cfg):
@@ -21,12 +22,13 @@ class TaskThread():
 
     def start(self):
         if self.threadrunning:
+            self.log.warning("Task already started")
             return
 
-        self.log.info("Starting thread")
-
         try:
+            self.log.info("Starting task")
             self.threadrunning = True
+            self.stopRequested = False
             self.thread = threading.Thread(target=self._threadhandler, args=())
             self.thread.start()
         except:
@@ -35,11 +37,11 @@ class TaskThread():
 
     def stop(self):
         if not self.threadrunning:
+            self.log.warning("Task not started")
             return
 
-        self.log.info("Stopping thread")
-
-        self.threadrunning = False
+        self.log.info("Stopping task")
+        self.stopRequested = True
         self.thread.join()
 
 
@@ -48,18 +50,29 @@ class TaskThread():
 
         while time.time() < endtime:
             time.sleep(1)
-            if not self.threadrunning:
+            if self.stopRequested:
                 return False  # Wait cancelled, please exit
 
         return True  # Wait finished, continue working
 
 
     def _threadhandler(self):
-        while self.threadrunning:
-            self.mainLoop()
+        self.taskSetup()
+
+        while not self.stopRequested:
+            self.taskLoop()
+
+        self.threadrunning = False
 
 
-    def mainLoop(self):
+    def taskSetup(self):
+        ''' Override this method in subclasses '''
+
+        # Do nothing for the base class
+        pass
+
+
+    def taskLoop(self):
         ''' Override this method in subclasses '''
 
         # Do nothing for the base class

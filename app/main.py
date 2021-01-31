@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import sys
+import signal
 import time
 import logging
 import json
@@ -8,6 +9,30 @@ from src.profilepinger import ProfilePinger
 from src.apistatsgetter import APIStatsGetter
 
 CONFIG_FILE = "/fortnitetracker-stats/config/config.json"
+
+# ----------------------------------------------------------------------
+# ---
+# --- Exit signal management
+# ---
+
+def onSignal(signalNumber, frame):
+    logger.warning('Received signal [{}]'.format(signal.Signals(signalNumber).name))
+    logger.warning('Stopping tasks')
+
+    if pinger:
+        pinger.stop()
+
+    if stats:
+        stats.stop()
+
+    logger.warning('Task stop FINISHED - closing')
+    sys.exit(0)
+
+
+def registerExitSignals():
+    for s in [signal.SIGHUP, signal.SIGINT, signal.SIGQUIT, signal.SIGTERM]:
+        signal.signal(s, onSignal)
+
 
 # ----------------------------------------------------------------------
 # ---
@@ -37,23 +62,22 @@ for lg in THIRDPARTY_LOGGERS:
 logger.info("-" * 50)
 logger.info("Initializing")
 
-# ----------------------------------------------------------------------
+logger.info("Registering exit signals")
+registerExitSignals()
 
 logger.info("Loading config")
-
 with open(CONFIG_FILE) as f:
     cfg = json.load(f)
 
+logger.info("Initializing tasks")
 pinger = ProfilePinger(cfg)
 pinger.start()
 
 stats = APIStatsGetter(cfg)
 stats.start()
 
-# While web service is not added we need a loop...
+logger.info("Initialization FINISHED")
+
+# Keep main thread alive
 while True:
     time.sleep(100)
-
-# serviceport = int(cfg['webPort'])
-# logger.info(f"Starting web server on port {serviceport}")
-# api.webapp.run(host='0.0.0.0', port=serviceport)

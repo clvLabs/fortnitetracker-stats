@@ -11,11 +11,11 @@ class FortniteTracker():
         self.log = logging.getLogger(loggerName)
         self.cfg = cfg
         self.lastRequestTime = 0
-        self.cancelRequest = False
+        self.stopRequested = False
 
 
-    def cancelRequest(self):
-        self.cancelRequest = True
+    def stop(self):
+        self.stopRequested = True
 
 
     def getTrackerPage(self, trn_username):
@@ -35,6 +35,9 @@ class FortniteTracker():
 
         profile = self._apiRequest(url)
 
+        if self.stopRequested:
+            return None
+
         if profile and 'accountId' in profile:
             return profile
         else:
@@ -46,6 +49,9 @@ class FortniteTracker():
         url = self._buildApiUrl('matches').format(user_id=user_id)
 
         matches = self._apiRequest(url)
+
+        if self.stopRequested:
+            return None
 
         # Make sure we have a valid response
         if matches and type(matches) is not list:
@@ -63,6 +69,9 @@ class FortniteTracker():
 
 
     def _pageRequest(self, url, headers=None):
+        if self.stopRequested:
+            return None
+
         try:
             response = requests.get(url, headers=headers)
             if response.status_code != 200:
@@ -76,18 +85,21 @@ class FortniteTracker():
 
 
     def _apiRequest(self, url):
+        if self.stopRequested:
+            return None
+
         requestDelay = self.cfg['fortniteTracker']['api']['requestDelay']
 
         # Check if we have to wait until requestDelay
         nextRequestTime = self.lastRequestTime + requestDelay
         remaining = nextRequestTime - time.time()
 
-        if remaining > 0:
-            self.log.debug(f"[API] Waiting {remaining:5.3f}s before request")
+        # if remaining > 0:
+        #     self.log.debug(f"[API] Waiting {remaining:5.3f}s before next request")
 
         while remaining > 0:
-            # Stop waiting if we get a cancel request
-            if self.cancelRequest:
+            if self.stopRequested:
+                self.log.warning(f"[API] Wait cancelled - stop requested")
                 return None
             time.sleep(0.1)
             remaining = nextRequestTime - time.time()
