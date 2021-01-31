@@ -33,6 +33,7 @@ $ nano config/config.json
 * Update the service: `scripts/update.sh`
 * View service logs: `scripts/logs.sh`
 * Build the container: `scripts/build.sh`
+* Get a bash shell in the service container: `scripts/shell.sh`
 
 ## Development
 
@@ -43,5 +44,5 @@ $ nano config/config.json
 * Restart container: `dev/restart.sh`
 * Stop container: `dev/stop.sh`
 * Kill container: `dev/kill.sh`
-* Run a container starting with a bash shell: `dev/shell.sh`
-* Get a bash shell in a running container: `docker exec -it fortnitetracker-stats bash`
+* Run a container starting with a bash shell: `dev/newshell.sh`
+* Get a bash shell in a running container: `dev/shell.sh`

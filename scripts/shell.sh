@@ -1,4 +1,9 @@
 #!/bin/bash
+source app/scripts/utils.sh
+
+log ""
+log "---[ getting a shell in the running service ]-----------------------------"
+log ""
 docker exec \
     --interactive \
     --tty \
