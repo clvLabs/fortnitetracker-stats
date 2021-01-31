@@ -4,8 +4,8 @@ from typing import List
 import requests
 import json
 
-from src.lib.task import Task
-from src.lib.fortnitetracker import FortniteTracker
+from .lib.task import Task
+from .lib.fortnitetracker import FortniteTracker
 
 DATA_FOLDER = "/fortnitetracker-stats/data"
 

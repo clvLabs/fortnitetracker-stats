@@ -2,8 +2,8 @@
 import logging
 import requests
 
-from src.lib.task import Task
-from src.lib.fortnitetracker import FortniteTracker
+from .lib.task import Task
+from .lib.fortnitetracker import FortniteTracker
 
 
 class ProfilePinger(Task):
