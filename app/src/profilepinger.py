@@ -21,6 +21,13 @@ class ProfilePinger(TaskThread):
         self.log.info(f"Public IP: {self.public_ip}")
 
 
+    def start(self):
+        if self.cfg['profilePinger']['active']:
+            super().start()
+        else:
+            self.log.warning("Skipping start (deactivated)")
+
+
     def mainLoop(self):
         self.log.info("New profile update --------------------------------")
 

@@ -20,10 +20,10 @@ class TaskThread():
 
 
     def start(self):
-        self.log.info("Starting thread")
-
         if self.threadrunning:
             return
+
+        self.log.info("Starting thread")
 
         try:
             self.threadrunning = True
@@ -34,10 +34,10 @@ class TaskThread():
 
 
     def stop(self):
-        self.log.info("Stopping thread")
-
         if not self.threadrunning:
             return
+
+        self.log.info("Stopping thread")
 
         self.threadrunning = False
         self.thread.join()

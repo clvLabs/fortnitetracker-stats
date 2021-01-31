@@ -24,6 +24,13 @@ class APIStatsGetter(TaskThread):
         self.fill_users_id()
 
 
+    def start(self):
+        if self.cfg['apiStatsGetter']['active']:
+            super().start()
+        else:
+            self.log.warning("Skipping start (deactivated)")
+
+
     def fill_users_id(self):
         for user in self.cfg['profiles']:
             username = user['username']
