@@ -79,10 +79,18 @@ class FortniteTracker():
         requestDelay = self.cfg['fortniteTracker']['api']['requestDelay']
 
         # Check if we have to wait until requestDelay
-        if time.time() < self.lastRequestTime + requestDelay:
+        nextRequestTime = self.lastRequestTime + requestDelay
+        remaining = nextRequestTime - time.time()
+
+        if remaining > 0:
+            self.log.debug(f"[API] Waiting {remaining:5.3f}s before request")
+
+        while remaining > 0:
+            # Stop waiting if we get a cancel request
             if self.cancelRequest:
                 return None
             time.sleep(0.1)
+            remaining = nextRequestTime - time.time()
 
         requestHeaders = { "TRN-Api-Key": self.cfg['fortniteTracker']['api']['key'] }
         apiResponse = self._pageRequest(url, headers=requestHeaders)
