@@ -31,7 +31,7 @@ h3 {
     line-height: 27px;
     padding-top: 15px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #D8D8D8;
+    border-bottom: 1px solid #d8d8d8;
     border-top: 1px solid #D8D8D8;
 }
 
@@ -62,4 +62,65 @@ input[type=submit] {
     cursor:pointer;
     -webkit-border-radius: 3px;
     border-radius: 3px;
+}
+
+.profile-info{
+    display: block;
+}
+
+.profiles-form{
+    font-size: 16px;
+    color: #b9dcff;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+.profiles-form .profiles-selector label {
+    display: inline-block;
+    cursor: pointer;
+    color: #cecece;
+    background: rgb(61, 61, 61);
+    position: relative;
+    padding: 2px 15px 2px 15px;
+    font-size: 1em;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease; 
+}
+.profiles-form .checkbox label {
+    display: inline-block;
+    cursor: pointer;
+    color: #c0c0c0;
+    
+    position: relative;
+    padding: 5px 15px 5px 15px;
+    font-size: 1em;
+    border-radius: 5px;
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+.profiles-form .profiles-selector label:hover {
+    background: rgb(230, 230, 230); 
+    color: #222;
+}
+.profiles-form .profiles-selector label:before {
+    content: "";
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    left: 15px;
+}
+
+.profiles-form .profiles-selector input[type="checkbox"] {
+    display: none;
+}
+.profiles-form .profiles-selector input[type="checkbox"]:checked + label:before {
+    display: none; 
+}
+.profiles-form .profiles-selector input[type="checkbox"]:checked + label {
+    background: #26473d;
+    color: #c0c0c0;
+}
+#bg_canvas {
+    display: none;
 }

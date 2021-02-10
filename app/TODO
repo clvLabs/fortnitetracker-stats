@@ -1,0 +1,14 @@
+Preguntas a Tony:
+* funciones que calculen cosas que devuelva la api, por ejemplo una sesion de un user ¿donde es el lugar correcto para ponerlo? ¿leen directamente los files de /data?
+* pasar parámetros a api ¿¿como le paso el user?? >> https://unipython.com/como-hacer-paso-a-paso-una-api-restful-en-flask-con-python/
+* Cómo organizar por sessiones:
+    -¿es buena idea hacerlo siempre en orden descendente por fecha?
+    - Por ejemplo, en la api una funcion que devuelva una sesion de un user:
+         -/api/v1/${user}/session/0 devoldería la última NO
+         -/api/v1/${user}/session/1 devoldería la penúltima NO
+         -/api/v1/${user}/session/first
+         -/api/v1/${user}/session/last
+         -/api/v1/${user}/session/last?n=${numero} devolveria las n últimas -> https://stackoverflow.com/questions/24892035/how-can-i-get-the-named-parameters-from-a-url-using-flask
+* Como hago para que una vez pulsado un user se refreste la info que se muestra en la web y vea sus datos (voy a querer comparar)
+    ejemplo en index.js
+checkbox personalizados -> https://www.falconmasters.com/web-design/radio-buttons-checkbox-personalizados/
