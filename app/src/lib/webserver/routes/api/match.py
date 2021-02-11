@@ -5,6 +5,7 @@ from datetime import datetime
 from flask import jsonify
 from flask import request
 from flask_restful import abort, Resource
+from src.model.match import Match
 
 logger = logging.getLogger('APIRoute/match')
 
@@ -26,14 +27,19 @@ def init(_cfg, _webapp, _webapi):
 def _initRoutes():
 
     # ----------------------------------------------------------------------
-    class Match(Resource):
+    class MatchApiRoute(Resource):
         def get(self, user, which):
             logger.debug(f"API hit: GET /api/v1/{user}/match/{which}")
             filename = f"/fortnitetracker-stats/data/{user}_matches.json"
             with open(filename, 'r') as f:
-                matches = json.loads(f.read())
+                trn_matches = json.loads(f.read())
             # ordenamos por fecha
-            matches = sorted(matches, key=lambda item: item["dateCollected"], reverse=True)
+            trn_matches = sorted(trn_matches, key=lambda item: item["dateCollected"], reverse=True)
+            matches = []
+            obj_match = Match(user)
+            for match in trn_matches:
+                obj_match.fill(match)
+                matches.append(obj_match)
             num_match = request.args.get('pos', default = 1, type = int)
             if which == "last":
                 match = matches[num_match - 1]
@@ -42,16 +48,16 @@ def _initRoutes():
             else:
                 match = {}
 
-            return jsonify({"match": match})
+            return jsonify({"match": match.__dict__})
 
-    class LastMatch(Resource):
+    class LastMatchApiRoute(Resource):
         def get(self, user):
             logger.debug(f"API hit: GET /api/v1/{user}/match")
-            m = Match()
+            m = MatchApiRoute()
             return m.get(user, "last")
 
-    webapi.add_resource(LastMatch, '/api/v1/<user>/match')
-    webapi.add_resource(Match, '/api/v1/<user>/match/<which>')
+    webapi.add_resource(LastMatchApiRoute, '/api/v1/<user>/match')
+    webapi.add_resource(MatchApiRoute, '/api/v1/<user>/match/<which>')
 
 # @user.route('/<user_id>', defaults={'username': None})
 # @user.route('/<user_id>/<username>')

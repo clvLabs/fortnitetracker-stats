@@ -1,5 +1,3 @@
-import json
-
 class Session():
     def __init__(self, username):
         self.username = username
