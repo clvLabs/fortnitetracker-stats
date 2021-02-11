@@ -31,15 +31,8 @@ def _initRoutes():
         def get(self, user, which):
             logger.debug(f"API hit: GET /api/v1/{user}/match/{which}")
             filename = f"/fortnitetracker-stats/data/{user}_matches.json"
-            with open(filename, 'r') as f:
-                trn_matches = json.loads(f.read())
-            # ordenamos por fecha
-            trn_matches = sorted(trn_matches, key=lambda item: item["dateCollected"], reverse=True)
-            matches = []
-            obj_match = Match(user)
-            for match in trn_matches:
-                obj_match.fill(match)
-                matches.append(obj_match)
+            matches = Match.from_file(filename, user)
+            matches = sorted(matches, key=lambda item: item.date_collected, reverse=True) # ordenamos por fecha
             num_match = request.args.get('pos', default = 1, type = int)
             if which == "last":
                 match = matches[num_match - 1]
@@ -48,7 +41,7 @@ def _initRoutes():
             else:
                 match = {}
 
-            return jsonify({"match": match.__dict__})
+            return jsonify({"match": match.get_dict()})
 
     class LastMatchApiRoute(Resource):
         def get(self, user):

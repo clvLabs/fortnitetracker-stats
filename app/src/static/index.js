@@ -40,7 +40,7 @@ function onActivateProfile(profile_name)
         {
             profile_activeHTML = `<div id=${profile_name}-last-match` 
             profile_activeHTML += `class="profile_item"`
-            profile_activeHTML += `title="${profile_name}">KILLS: ${data.lastmatch.kills}`
+            profile_activeHTML += `title="${profile_name}">KILLS: ${data.match.kills}`
             profile_activeHTML += `</div>`
             
             $('#profile-info-div').html(profile_activeHTML)
@@ -52,7 +52,7 @@ function onActivateProfile(profile_name)
     }
     
     $.get({
-        url: `api/v1/${profile_name}/lastmatch`,
+        url: `api/v1/${profile_name}/match/last`,
         dataType: 'json',
         error: onError,
         success: onSuccess
