@@ -57,14 +57,14 @@ class Match():
     
     @property
     def game_mode(self):
-        if self.playlist == "p1":
+        if self.playlist == "p2":
             return "solo"
         elif self.playlist == "p9":
             return "trios"
         elif self.playlist == "p10":
             return "duos"
         elif self.playlist == "misc":
-            return "creative"
+            return "misc"
         else:
             return f"UNKNOWN [{self.playlist}]"
 
