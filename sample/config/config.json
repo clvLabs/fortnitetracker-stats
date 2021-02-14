@@ -3,17 +3,20 @@
         {
             "username": "first_user",
             "trn_username": "first_user",
-            "platform": "kbm"
+            "platform": "kbm",
+            "account_type": "epic"
         },
         {
             "username": "other_user_not_epic",
             "trn_username": "psn(other_user_not_epic)",
-            "platform": "gamepad"
+            "platform": "gamepad",
+            "account_type": "psn"
         },
         {
             "username": "third_user",
             "trn_username": "third_user",
-            "platform": "touch"
+            "platform": "touch",
+            "account_type": "epic"
         }
     ],
     "fortniteTracker": {
@@ -29,6 +32,17 @@
         "trackerURL": "https://fortnitetracker.com/profile/all/{trn_username}/matches",
         "notificationsURL": "https://notifications.thetrackernetwork.com/api/notifications/?site=Fortnite&userName={public_ip}"
     },
+    "fortnite-api": {
+        "api": {
+            "requestDelay": 2,
+            "baseUrl": "https://fortnite-api.com/v1",
+            "paths": {
+                "map": "map",
+                "playlists": "playlists",
+                "profile": "stats/br/v2?name={username}&accountType={account_type}&image=all"
+            }
+        }
+    },
     "profilePinger": {
         "enabled": true,
         "profilePingInterval": 300
@@ -36,6 +50,10 @@
     "apiStatsGetter": {
         "enabled": true,
         "statusGetInterval": 100
+    },
+    "apiProfilesGetter": {
+        "enabled": true,
+        "statusGetInterval": 300
     },
     "webServer": {
         "enabled": true,
