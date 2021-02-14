@@ -35,7 +35,8 @@ class Profile():
     def add_trn_data_from_dict(self, trn_dict):
         self.id = trn_dict["accountId"]
         self.name = trn_dict["epicUserHandle"]
-        self.country = trn_dict["country"]
+        if 'country' in trn_dict.keys():
+            self.country = trn_dict["country"]
 
 
     def add_fapi_from_file(self, fapi_filename):
