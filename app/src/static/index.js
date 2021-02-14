@@ -69,13 +69,23 @@ function loadConfiguredProfiles() {
 
     function onSuccess(data) {
         profilesHTML = ""
+        imagesHTML = ""
         for (profile of data.profiles) {
+            imagesHTML += `<div id="image-stats-${profile.username}-div" class="profile-stats-images"></div>`
+            
             profilesHTML += `<input type="checkbox" name="profiles" id="${profile.username}-input" onClick="onActivateProfile('${profile.username}')">`
             profilesHTML += `<label for="${profile.username}-input" >`  
             profilesHTML += `${profile.username}`
             profilesHTML += `</label>`
         }
+        $(`#profile-stats-images-div`).html(imagesHTML)
+
+        for (profile of data.profiles) {
+            loadImagesOfProfile(profile.username);
+        }
+        
         $('#profiles-div').html(profilesHTML)
+        
     }
 
     $.get({
@@ -86,3 +96,22 @@ function loadConfiguredProfiles() {
     });
 }
 
+function loadImagesOfProfile(profile_name) {
+    function onSuccess(data) {
+        imageProfileHTML = `<img src="${data.profile.stats_image}" width="380">`
+        $(`#image-stats-${profile_name}-div`).html(imageProfileHTML)
+    }
+
+    function onError(xhr, ajaxOptions, thrownError) {
+        toast(`Can't load picture`, TOAST_ERROR);
+        console.log(xhr.status);
+        console.log(thrownError);
+    }
+
+    $.get({
+        url: `api/v1/${profile_name}/profile`,
+        dataType: 'json',
+        error: onError,
+        success: onSuccess
+    });
+}
