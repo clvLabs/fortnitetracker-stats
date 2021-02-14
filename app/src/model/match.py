@@ -5,7 +5,6 @@ logger = logging.getLogger('model/match')
 
 class Match():
     def __init__(self, username):
-        
         self.username = username
         self.id = 0
         self.date_collected = ""
@@ -42,6 +41,7 @@ class Match():
             logger.debug(f"username {username} not found")
         return matches
     
+
     @property
     def eskores(self):
         ret_val = 0
@@ -54,6 +54,7 @@ class Match():
         ret_val += self.top5 * 15
         ret_val += self.top6 * 15
         return ret_val
+    
     
     @property
     def game_mode(self):
