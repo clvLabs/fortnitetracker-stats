@@ -8,6 +8,7 @@ from pprint import pformat
 
 from src.profilepinger import ProfilePinger
 from src.apistatsgetter import APIStatsGetter
+from src.apiprofilesgetter import APIProfilesGetter
 from src.webserver import WebServer
 
 CONFIG_FILE = "/fortnitetracker-stats/config/config.json"
@@ -23,6 +24,9 @@ def onSignal(signalNumber, frame):
 
     if pinger:
         pinger.stop()
+
+    if profiler:
+        profiler.stop()
 
     if stats:
         stats.stop()
@@ -79,6 +83,9 @@ logger.info(f"Config:\n{pformat(cfg, indent=4)}")
 logger.info("Initializing tasks")
 pinger = ProfilePinger(cfg)
 pinger.start()
+
+profiler = APIProfilesGetter(cfg)
+profiler.start()
 
 stats = APIStatsGetter(cfg)
 stats.start()

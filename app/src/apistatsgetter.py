@@ -37,8 +37,7 @@ class APIStatsGetter(Task):
     def fill_users_id(self):
         for user in self.cfg['profiles']:
             username = user['username']
-            self.log.info(f"[{username}] Requesting profile data")
-            user_id = self.get_user_id(user)
+            user_id = self.get_user_id(username)
 
             if self.stopRequested:
                 return
@@ -50,30 +49,15 @@ class APIStatsGetter(Task):
                 self.log.warning(f"[{username}] User will be IGNORED")
 
 
-    def get_user_id(self, user):
-        profile = self.get_user_profile(user)
-        if profile:
+    def get_user_id(self, username):
+        filename = f"{DATA_FOLDER}/{username}_trn_profile.json"
+
+        try:
+            with open(filename, 'r') as f:
+                profile = json.loads(f.read())
             return profile['accountId']
-        else:
-            return None
-
-
-    def get_user_profile(self, user):
-        username = user['username']
-        trn_username = user['trn_username']
-        platform = user['platform']
-
-        profile = self.tracker.getUserProfile(trn_username, platform)
-
-        if self.stopRequested:
-            return None
-
-        if profile:
-            return profile
-        else:
-            self.log.warning(f"[{username}] Can't get profile info for {trn_username} - platform {platform}")
-            return None
-
+        except FileNotFoundError:
+            self.log.info(f"[{username}] Profile file not found.")
 
     def taskSetup(self):
         ''' Override of Task.taskSetup() '''
