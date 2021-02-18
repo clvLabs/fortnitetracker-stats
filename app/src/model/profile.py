@@ -29,7 +29,7 @@ class Profile():
             if dict_profile:
                 self.add_trn_data_from_dict(dict_profile)
         except FileNotFoundError:
-            logger.debug(f"{username} trn profile file not found")
+            logger.debug(f"{self.name} trn profile file not found")
 
 
     def add_trn_data_from_dict(self, trn_dict):
@@ -46,7 +46,7 @@ class Profile():
             if dict_profile:
                 self.add_fapi_data_from_dict(dict_profile)
         except FileNotFoundError:
-            logger.debug(f"{username} fortnite-api profile file not found")
+            logger.debug(f"{self.name} fortnite-api profile file not found")
 
 
     def add_fapi_data_from_dict(self, fapi_dict):
