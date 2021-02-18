@@ -72,14 +72,14 @@ class Session():
     @property
     def last_trn_rating(self):
         if self.entries:
-            return self.entries[-1].trn_Rating
+            return self.entries[0].trn_Rating
         else:
             return None
     
     @property
     def first_trn_rating(self):
         if self.entries:
-            return self.entries[0].trn_Rating
+            return self.entries[-1].trn_Rating
         else:
             return None
 
