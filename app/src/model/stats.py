@@ -1,5 +1,9 @@
+import json
 from datetime import datetime
 from .stats_item import StatsItem
+
+DATA_FOLDER = "/fortnitetracker-stats/data"
+
 class Stats():
     def __init__(self, _cfg):
         self.cfg = _cfg
@@ -8,8 +12,11 @@ class Stats():
         self.duos = []
         self.squad = []
 
+    def fill_for_user(self, username):
+        filename = f"{DATA_FOLDER}/{username}_stats.json"
+        self.fill_from_file(filename)
     
-    def fill_from_file(filename):
+    def fill_from_file(self, filename):
         try:
             with open(filename, 'r') as f:
                 dict_stats = json.loads(f.read())
@@ -37,7 +44,7 @@ class Stats():
             self.squad.append(StatsItem.from_trn_dict("squad", trn_data))
 
     
-    def add_stats_from_trn_dict(self, trn_data):
+    def add_stats_from_trn_dict(self, username, trn_data):
         gap = self.cfg["sessions"]["gapBetweenSessions"] # gap en segundos
         last_match_date = datetime.strptime(trn_data["recentMatches"][0]["dateCollected"], "%Y-%m-%dT%H:%M:%S")
         now = datetime.now()
@@ -45,7 +52,9 @@ class Stats():
 
         # solo actualizamos stats si hemos cambiado de sesion y hay datos nuevos
         if interval > gap:
+            self.fill_for_user(username)
             new_data = False
+
             if self.solo:
                 if trn_data["stats"]["p2"]["matches"]["valueInt"] > self.solo[-1].matches:
                     self.solo.append(StatsItem.from_trn_dict("solo", trn_data))
