@@ -61,7 +61,7 @@ class Match():
         if self.playlist == "p2":
             return "solo"
         elif self.playlist == "p9":
-            return "trios"
+            return "squad"
         elif self.playlist == "p10":
             return "duos"
         elif self.playlist == "misc":
