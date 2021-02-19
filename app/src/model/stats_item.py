@@ -29,7 +29,7 @@ class StatsItem():
         new_item.top3 = dict["top3"]
         new_item.top5 = dict["top5"]
         new_item.top6 = dict["top6"]
-        new_item.top1 = dict["top1dict"]
+        new_item.top1 = dict["top1"]
         new_item.top12 = dict["top12"]
         new_item.top25 = dict["top25"]
         new_item.kd = dict["kd"]
