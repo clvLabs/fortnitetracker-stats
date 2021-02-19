@@ -40,7 +40,7 @@ def _initRoutes():
             return jsonify({"session": dict_sessions})
         
         def get_sessions(self, user, matches, num_sessions):
-            gap = 3600 # gap en segundos
+            gap = self.cfg["sessions"]["gapBetweenSessions"] # gap en segundos
             sessions = []
             matches = sorted(matches, key=lambda item: item.date_collected, reverse=True) # ordenamos por fecha
             prev_match = matches[0]

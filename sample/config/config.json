@@ -58,5 +58,8 @@
     "webServer": {
         "enabled": true,
         "servicePort": 80
+    },
+    "sessions": {
+        "gapBetweenSessions": 3600
     }
 }
