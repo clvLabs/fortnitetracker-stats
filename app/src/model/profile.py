@@ -11,7 +11,6 @@ class Profile():
         self.stats_image = ""
         self.battle_pass_level = -1
         self.battle_pass_progress = -1
-        self.stats = {}
 
 
     @staticmethod
@@ -34,7 +33,6 @@ class Profile():
 
     def add_trn_data_from_dict(self, trn_dict):
         self.id = trn_dict["accountId"]
-        self.name = trn_dict["epicUserHandle"]
         if 'country' in trn_dict.keys():
             self.country = trn_dict["country"]
 
@@ -50,6 +48,7 @@ class Profile():
 
 
     def add_fapi_data_from_dict(self, fapi_dict):
+        self.name = fapi_dict["data"]["account"]["name"]
         self.stats_image = fapi_dict["data"]["image"]
         self.battle_pass_level = fapi_dict["data"]["battlePass"]["level"]
         self.battle_pass_progress = fapi_dict["data"]["battlePass"]["progress"]
@@ -63,7 +62,6 @@ class Profile():
             "stats_image": self.stats_image,
             "battle_pass_level": self.battle_pass_level,
             "battle_pass_progress": self.battle_pass_progress,
-            "stats": self.stats
         }
 
         return new_dict
