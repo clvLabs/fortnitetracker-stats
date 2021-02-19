@@ -83,12 +83,15 @@ logger.info(f"Config:\n{pformat(cfg, indent=4)}")
 logger.info("Initializing tasks")
 pinger = ProfilePinger(cfg)
 pinger.start()
+time.sleep(5)
 
 profiler = APIProfilesGetter(cfg)
 profiler.start()
+time.sleep(30)
 
 stats = APIStatsGetter(cfg)
 stats.start()
+time.sleep(15)
 
 web = WebServer(cfg)
 web.start()

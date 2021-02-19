@@ -3,6 +3,7 @@ import logging
 from typing import List
 import requests
 import json
+import time
 
 from .lib.task import Task
 from .lib.fortnitetracker import FortniteTracker
@@ -59,6 +60,8 @@ class APIProfilesGetter(Task):
             # save files
             self.save_profile_to_file(username)
             self.save_stats_to_file(username)
+            self.log.info("Sleeping 5 seconds...")
+            self._threadsleep(5)
 
             # reiniciamos datos
             self.profile = Profile()
@@ -68,23 +71,23 @@ class APIProfilesGetter(Task):
 
         self.log.info("Api stats update FINISHED --------------------------------")
 
-        self._threadsleep(self.cfg['apiStatsGetter']['statusGetInterval'])
+        self._threadsleep(self.cfg['apiProfilesGetter']['statusGetInterval'])
 
 
     def getProfileFromTrn(self, username, trn_username, platform):
         filename = f"{DATA_FOLDER}/{username}_trn_profile.json"
-        self.log.info(f"[{username}] Requesting profile from tracking network")
+        self.log.info(f"[{username}] Requesting profile from tracker network")
         trn_profile_actual_dict = self.tracker.getUserProfile(trn_username, platform)
 
         if self.stopRequested:
             return
         
         if not trn_profile_actual_dict:
-            self.log.warning(f"[{username}] Can't get profile from tracking network api")
+            self.log.warning(f"[{username}] Can't get profile from tracker network api")
             return
         
         self.profile.add_trn_data_from_dict(trn_profile_actual_dict)
-        self.stats.add_stats_from_trn_dict(trn_profile_actual_dict)
+        self.stats.add_stats_from_trn_dict(username, trn_profile_actual_dict)
 
         # Activamos para debuggar la fuente de datos
         self.save_trn_profile_to_file(username, trn_profile_actual_dict)
