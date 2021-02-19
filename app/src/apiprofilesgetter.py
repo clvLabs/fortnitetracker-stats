@@ -7,6 +7,8 @@ import json
 from .lib.task import Task
 from .lib.fortnitetracker import FortniteTracker
 from .lib.fortniteapi import FortniteApi
+from .model.profile import Profile
+from .model.stats import Stats
 
 DATA_FOLDER = "/fortnitetracker-stats/data"
 
@@ -18,6 +20,8 @@ class APIProfilesGetter(Task):
         self.log.info("Initializing")
         self.tracker = FortniteTracker(self.cfg, 'APIProfilesGetter')
         self.fortniteapi = FortniteApi(self.cfg, 'APIProfilesGetter')
+        self.profile = Profile()
+        self.stats = Stats(cfg)
 
     
     def start(self):
@@ -36,15 +40,6 @@ class APIProfilesGetter(Task):
         super().stop()
 
 
-    # def taskSetup(self):
-    #     ''' Override of Task.taskSetup() '''
-    #     self.log.info("Task setup")
-    #     # Grab the users_ids and retain until next start
-    #     self.log.info(f"Getting user IDs")
-    #     self.fill_users_id()
-    #     self.log.info("Task setup FINISHED")
-
-
     def taskLoop(self):
         ''' Override of Task.taskLoop() '''
         self.log.info("New api profiles update --------------------------------")
@@ -57,14 +52,24 @@ class APIProfilesGetter(Task):
             platform = user['platform']
             account_type = user['account_type']
 
+            # get data from sources
             self.getProfileFromTrn(username, trn_username, platform)
             self.getProfileFromFortniteApi(username, account_type)
+
+            # save files
+            self.save_profile_to_file(username)
+            self.save_stats_to_file(username)
+
+            # reiniciamos datos
+            self.profile = Profile()
+            self.stats = Stats(self.cfg)
 
         # # 
 
         self.log.info("Api stats update FINISHED --------------------------------")
 
         self._threadsleep(self.cfg['apiStatsGetter']['statusGetInterval'])
+
 
     def getProfileFromTrn(self, username, trn_username, platform):
         filename = f"{DATA_FOLDER}/{username}_trn_profile.json"
@@ -78,9 +83,11 @@ class APIProfilesGetter(Task):
             self.log.warning(f"[{username}] Can't get profile from tracking network api")
             return
         
-        self.log.info(f"[{username}] Writing profile from tracking network")
-        with open(filename, 'w') as f:
-            json.dump(trn_profile_actual_dict, f)
+        self.profile.add_trn_data_from_dict(trn_profile_actual_dict)
+        self.stats.add_stats_from_trn_dict(trn_profile_actual_dict)
+
+        # Activamos para debuggar la fuente de datos
+        self.save_trn_profile_to_file(username, trn_profile_actual_dict)
 
 
     def getProfileFromFortniteApi(self, username, account_type):
@@ -95,6 +102,36 @@ class APIProfilesGetter(Task):
             self.log.warning(f"[{username}] Can't get profile from fortnite api")
             return
         
-        self.log.info(f"[{username}] Writing profile from fortnite api")
+        self.profile.add_fapi_data_from_dict(fapi_profile_actual_dict)
+
+
+    def save_trn_profile_to_file(self, username, trn_data):
+        filename = f"{DATA_FOLDER}/{username}_trn_profile.json"
+        
+        self.log.info(f"[{username}] Writing tracking network profile file")
         with open(filename, 'w') as f:
-            json.dump(fapi_profile_actual_dict, f)
+            json.dump(trn_data, f)
+
+
+    def save_fapi_profile_to_file(self, username, fapi_data):
+        filename = f"{DATA_FOLDER}/{username}_fortnite-api_profile.json"
+        
+        self.log.info(f"[{username}] Writing fortnite-api profile file")
+        with open(filename, 'w') as f:
+            json.dump(fapi_data, f)
+
+
+    def save_profile_to_file(self, username):
+        filename = f"{DATA_FOLDER}/{username}_profile.json"
+        
+        self.log.info(f"[{username}] Writing profile file")
+        with open(filename, 'w') as f:
+            json.dump(self.profile.get_dict(), f)
+
+
+    def save_stats_to_file(self, username):
+        filename = f"{DATA_FOLDER}/{username}_stats.json"
+        
+        self.log.info(f"[{username}] Writing stats file")
+        with open(filename, 'w') as f:
+            json.dump(self.stats.get_dict(), f)
