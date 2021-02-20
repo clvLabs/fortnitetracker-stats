@@ -14,12 +14,35 @@ class Profile():
 
 
     @staticmethod
+    def from_file(filename):
+        new_profile = Profile()
+        try:
+            with open(filename, 'r') as f:
+                dict_profile = json.loads(f.read())
+            if dict_profile:
+                new_profile.add_data_from_dict(dict_profile)
+        except FileNotFoundError:
+            logger.debug(f"{filename} profile file not found")
+
+        return new_profile
+
+
+    @staticmethod
     def from_files(trn_filename, fapi_filename):
         new_profile = Profile()
         new_profile.add_trn_from_file(trn_filename)
         new_profile.add_fapi_from_file(fapi_filename)
         return new_profile
-        
+    
+
+    def add_data_from_dict(self, data_dict):
+        self.id = data_dict["id"]
+        self.name = data_dict["name"]
+        self.country = data_dict["country"]
+        self.stats_image = data_dict["stats_image"]
+        self.battle_pass_level = data_dict["battle_pass_level"]
+        self.battle_pass_progress = data_dict["battle_pass_progress"]
+
 
     def add_trn_from_file(self, trn_filename):
         try:
