@@ -89,6 +89,7 @@ class APIProfilesGetter(Task):
         self.profile.add_trn_data_from_dict(trn_profile_actual_dict)
         self.stats.add_stats_from_trn_dict(username, trn_profile_actual_dict)
 
+
         # Activamos para debuggar la fuente de datos
         self.save_trn_profile_to_file(username, trn_profile_actual_dict)
 
@@ -135,6 +136,9 @@ class APIProfilesGetter(Task):
     def save_stats_to_file(self, username):
         filename = f"{DATA_FOLDER}/{username}_stats.json"
         
-        self.log.info(f"[{username}] Writing stats file")
-        with open(filename, 'w') as f:
-            json.dump(self.stats.get_dict(), f)
+        if self.stats.overall:
+            self.log.info(f"[{username}] Writing stats file")
+            with open(filename, 'w') as f:
+                json.dump(self.stats.get_dict(), f)
+        else:
+            self.log.warning(f"[{username}] Stats empty. Don't panic, I don't save it")

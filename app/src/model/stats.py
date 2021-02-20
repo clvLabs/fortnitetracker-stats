@@ -12,10 +12,12 @@ class Stats():
         self.duos = []
         self.squad = []
 
+
     def fill_for_user(self, username):
         filename = f"{DATA_FOLDER}/{username}_stats.json"
         self.fill_from_file(filename)
-    
+
+
     def fill_from_file(self, filename):
         try:
             with open(filename, 'r') as f:
@@ -32,7 +34,7 @@ class Stats():
                     self.squad.append(StatsItem.from_dict(s))
         except FileNotFoundError:
             #Not found, pues nada, pasamos del tema
-            println("No hay fichero de stats")
+            return
     
 
     def add_stats(self, game_mode, trn_data):
@@ -50,11 +52,10 @@ class Stats():
         now = datetime.now()
         interval = abs(now - last_match_date).seconds
 
+        self.fill_for_user(username)
         # solo actualizamos stats si hemos cambiado de sesion y hay datos nuevos
-        if interval > gap:
-            self.fill_for_user(username)
+        if interval > gap or not self.overall:
             new_data = False
-
             if self.solo:
                 if trn_data["stats"]["p2"]["matches"]["valueInt"] > self.solo[-1].matches:
                     self.solo.append(StatsItem.from_trn_dict("solo", trn_data))
