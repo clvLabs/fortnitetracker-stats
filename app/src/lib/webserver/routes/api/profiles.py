@@ -34,9 +34,8 @@ def _initRoutes():
     class UserProfileApiRoute(Resource):
         def get(self, user):
             logger.debug(f"API hit: GET /api/v1/{user}/profile")
-            filename_trn = f"/fortnitetracker-stats/data/{user}_trn_profile.json"
-            filename_fapi = f"/fortnitetracker-stats/data/{user}_fortnite-api_profile.json"
-            profile = Profile.from_files(filename_trn, filename_fapi)
+            filename = f"/fortnitetracker-stats/data/{user}_profile.json"
+            profile = Profile.from_file(filename)
 
             return jsonify({"profile": profile.get_dict()})
 
