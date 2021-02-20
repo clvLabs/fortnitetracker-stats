@@ -66,6 +66,8 @@ class Match():
             return "duos"
         elif self.playlist == "misc":
             return "misc"
+        elif self.playlist == "ltm":
+            return "ltm"
         else:
             return f"UNKNOWN [{self.playlist}]"
 
