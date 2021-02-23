@@ -17,20 +17,20 @@
 </head>
 
 <body>
-<div class="maindiv">
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-  <ul class=flashes>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-  {% endwith %}
-  <h1>{{ appName }} - {{ title }}</h1>
+  <div class="maindiv">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <h1 class="header">FORTPYTE</h1>
 
-  {% block content %}{% endblock %}
-</div>
+    {% block content %}{% endblock %}
+  </div>
 </body>
 
 </html>
