@@ -206,9 +206,8 @@ function getLastMatchesTable(profiles_data) {
     for (entry of profiles_data.session[0].entries) {
         var match_date = new Date(entry.date_collected)
         var diff = getDifferenceBetweenDates( match_date);
-        var match_top = getMatchTop(entry);
         matchesHTML += `<div class="divTableRow">`;
-        matchesHTML += `<div class="divTableCell">${match_top}</div>`;
+        matchesHTML += `<div class="divTableCell ${entry.top_display}">${entry.top_display}</div>`;
         matchesHTML += `<div class="divTableCell"> ${diff}</div>`;
         matchesHTML += `<div class="divTableCell">${entry.game_mode}</div>`;
         matchesHTML += `<div class="divTableCell">${entry.matches}</div>`;
@@ -223,10 +222,5 @@ function getLastMatchesTable(profiles_data) {
 
 function getDifferenceBetweenDates(match_date) {
     retval = "6 minutes ago";
-    return retval;
-}
-
-function getMatchTop(entry) {
-    retval = "Victory";
     return retval;
 }

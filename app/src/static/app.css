@@ -175,6 +175,21 @@ div.steelBlueCols {
     font-weight: bold;
     color: #FFFFFF;
 }
+.divTable.steelBlueCols .divTableBody .divTableCell.Victory {
+    background-color: #1e9fdb;
+}
+.divTable.steelBlueCols .divTableBody .divTableCell.Top10 {
+    background-color: #0e5576;
+}
+.divTable.steelBlueCols .divTableBody .divTableCell.Top25 {
+    background-color: #3c5663;
+}
+.divTable.steelBlueCols .divTableBody .divTableCell.Top5 {
+    background-color: #0e5576;
+}
+.divTable.steelBlueCols .divTableBody .divTableCell.Top12 {
+    background-color: #3c5663;
+}
 .divTable.steelBlueCols .divTableCell:nth-child(even) {
     background: #444;
 }
@@ -245,6 +260,8 @@ padding: 3px 5px;
     width: 715px;
     color: #9e9e9e;
 }
+
+
 
 /* DivTable.com */
 .divTable{ display: table; }
