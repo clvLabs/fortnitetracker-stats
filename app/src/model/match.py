@@ -71,6 +71,25 @@ class Match():
         else:
             return f"UNKNOWN [{self.playlist}]"
 
+    @property 
+    def top_display(self):
+        if self.top1 == 1:
+            return "Victory"
+        elif self.top3 == 1:
+            return "Top3" 
+        elif self.top5 == 1:
+            return "Top5" 
+        elif self.top6 == 1:
+            return "Top6" 
+        elif self.top10 == 1:
+            return "Top10" 
+        elif self.top12 == 1:
+            return "Top12" 
+        elif self.top25 == 1:
+            return "Top25" 
+        else:
+            return "Defeat"
+
 
     def _fill(self, data):
         self.id = data.get("id", 0)
@@ -105,6 +124,7 @@ class Match():
             "top3": self.top3,
             "top5": self.top5,
             "top6": self.top6,
+            "top_display": self.top_display,
             "trn_Rating": self.trn_Rating,
             "eskores": self.eskores,
             "game_mode": self.game_mode,
