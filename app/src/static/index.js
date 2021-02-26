@@ -1,3 +1,5 @@
+var session_num = 0;
+
 window.onload = function() {
     //setupUI();
     loadConfiguredProfiles(true);
@@ -53,10 +55,11 @@ function loadConfiguredProfiles(is_first_load) {
             profilesHTML = ""
             imagesHTML = ""
             for (profile of data.profiles) {
-                imagesHTML += `<div id="image-stats-${profile.username}-div" class="profile-stats-images"></div>`
+                _username = profile.username.replace(/ /g, "")
+                imagesHTML += `<div id="image-stats-${_username}-div" class="profile-stats-images"></div>`
                 
-                profilesHTML += `<input type="checkbox" name="profiles" id="${profile.username}-input" onClick="onSelectProfile('${profile.username}')">`
-                profilesHTML += `<label for="${profile.username}-input" >`  
+                profilesHTML += `<input type="checkbox" name="profiles" id="${_username}-input" onClick="onSelectProfile('${_username}')">`
+                profilesHTML += `<label for="${_username}-input" >`  
                 profilesHTML += `${profile.username}`
                 profilesHTML += `</label>`
             }
@@ -83,7 +86,7 @@ function loadConfiguredProfiles(is_first_load) {
 
         i=0
         for (profile of data.profiles) {
-            loadSessionsOfProfile(profile.username, i, is_first_load);
+            loadSessionsOfProfile(profile.username, i, is_first_load, 0);
             i++;
             //loadImagesOfProfile(profile.username);
         }
@@ -99,6 +102,7 @@ function loadConfiguredProfiles(is_first_load) {
 
 function loadSessionsOfProfile(profile_name, index, is_first_load) {
     function onSuccess(data) {
+        _username = profile_name.replace(/ /g, "");
         lastSessionHTML = getLastSessionTable(data);
         matchesHTML = getLastMatchesTable(data);
         
@@ -107,17 +111,20 @@ function loadSessionsOfProfile(profile_name, index, is_first_load) {
         
         if (is_first_load) {
             if (index > 0) {
-                $(`#divTableRow_${profile_name}`).hide();
-                $(`#divTable_${profile_name}`).hide();
+                $(`#divTableRow_${_username}`).hide();
+                $(`#divTable_${_username}`).hide();
             } else {
-                $(`#${profile_name}-input`).prop('checked', true);
+                $(`#${_username}-input`).prop('checked', true);
             }
         } else {
-            if (!$(`#${profile_name}-input`).is(":checked")) {
-                $(`#divTableRow_${profile_name}`).hide();
-                $(`#divTable_${profile_name}`).hide();
+            if (!$(`#${_username}-input`).is(":checked")) {
+                $(`#divTableRow_${_username}`).hide();
+                $(`#divTable_${_username}`).hide();
             }
         }
+        
+        $(`.${_username}_session_1`).hide();
+        $(`.${_username}_session_2`).hide();
     }
 
     function onError(xhr, ajaxOptions, thrownError) {
@@ -174,7 +181,7 @@ function startTimer() {
 
 function getLastSessionTable(profiles_data) {
     sessionsHTML = $('#sessions-info-div').html();
-    sessionsHTML += `<div class="divTableBody"><div class="divTableRow" id="divTableRow_${profiles_data.session[0].username}">`;
+    sessionsHTML += `<div class="divTableBody"><div class="divTableRow" id="divTableRow_${profiles_data.session[0].username.replace(/ /g, "")}">`;
     sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].username}</div>`;
     sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].game_mode}</div>`;
     sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].total_matches}</div>`;
@@ -190,8 +197,11 @@ function getLastSessionTable(profiles_data) {
 
 function getLastMatchesTable(profiles_data) {
     matchesHTML = $('#matches-info-div').html();
-    matchesHTML += `<div id="divTable_${profiles_data.session[0].username}">`
-    matchesHTML += `<div class="divTitleTable">${profiles_data.session[0].username}</div>`
+    matchesHTML += `<div id="divTable_${profiles_data.session[0].username.replace(/ /g, "")}">`
+    matchesHTML += `<div class="divTitleTable">${profiles_data.session[0].username}
+                    <a href="#" class="prev_page_btn" onClick='onChangeSessionInfo("${profiles_data.session[0].username.replace(/ /g, "")}", "next")'><<</a>
+                    <a href="#" class="next_page_btn" onClick='onChangeSessionInfo("${profiles_data.session[0].username.replace(/ /g, "")}", "prev")'>>></a>
+                    </div>`
     matchesHTML += `<div class="divTable steelBlueCols" >
                     <div class="divTableRow divTableSemiHeading">
                     <div class="divTableCell"></div>
@@ -203,24 +213,65 @@ function getLastMatchesTable(profiles_data) {
                     <div class="divTableCell">TrnRating</div>
                     </div>
                     <div class="divTableBody">`
-    for (entry of profiles_data.session[0].entries) {
-        var match_date = new Date(entry.date_collected)
-        var diff = getDifferenceBetweenDates( match_date);
-        matchesHTML += `<div class="divTableRow">`;
-        matchesHTML += `<div class="divTableCell ${entry.top_display}">${entry.top_display}</div>`;
-        matchesHTML += `<div class="divTableCell"> ${diff}</div>`;
-        matchesHTML += `<div class="divTableCell">${entry.game_mode}</div>`;
-        matchesHTML += `<div class="divTableCell">${entry.matches}</div>`;
-        matchesHTML += `<div class="divTableCell">${entry.kills}</div>`;
-        matchesHTML += `<div class="divTableCell">${entry.eskores}</div>`;
-        matchesHTML += `<div class="divTableCell">${entry.trn_Rating}</div>`;
-        matchesHTML += `</div>`
+    num_sess = 0
+    for (session of profiles_data.session) {
+        //matchesHTML += `<div class="divTableBody" id=${profiles_data.session[0].username.replace(/ /g, "")}_session_${num_sess}">`
+        for (entry of session.entries) {
+            var match_date = new Date(entry.date_collected)
+            var diff = getDifferenceBetweenDates( match_date);
+            matchesHTML += `<div class="divTableRow ${profiles_data.session[0].username.replace(/ /g, "")}_session_${num_sess}">`;
+            matchesHTML += `<div class="divTableCell ${entry.top_display}">${entry.top_display}</div>`;
+            matchesHTML += `<div class="divTableCell"> ${diff}</div>`;
+            matchesHTML += `<div class="divTableCell">${entry.game_mode}</div>`;
+            matchesHTML += `<div class="divTableCell">${entry.matches}</div>`;
+            matchesHTML += `<div class="divTableCell">${entry.kills}</div>`;
+            matchesHTML += `<div class="divTableCell">${entry.eskores}</div>`;
+            matchesHTML += `<div class="divTableCell">${entry.trn_Rating}</div>`;
+            matchesHTML += `</div>`
+        }
+        //matchesHTML += `</div>`
+        num_sess++;
     }
     matchesHTML += `</div></div></div>`;
     return matchesHTML;
 }
 
 function getDifferenceBetweenDates(match_date) {
-    retval = "6 minutes ago";
+    
+    ahora = Date.now()
+    diff = ahora - match_date;
+    if (diff < 60*1000) {
+        retval ="seconds ago"
+    } else if (diff < 60*60*1000) {
+        retval = (diff/(60*1000)).toFixed(0) + " minutes ago"
+    } else if (diff < 24*60*60*1000) {
+        retval = (diff/(60*60*1000)).toFixed(0) + " hours ago"
+    } else {
+        retval = (diff/(24*60*60*1000)).toFixed(0) + " days ago"
+    }
     return retval;
+}
+
+function onChangeSessionInfo(username, action) {
+    if (action == "prev") {
+        session_num--;
+    } else {
+        session_num++;
+    }
+    if (session_num <= 0) {
+        $(`.${username.replace(/ /g, "")}_session_0`).show();
+        $(`.${username.replace(/ /g, "")}_session_1`).hide();
+        $(`.${username.replace(/ /g, "")}_session_2`).hide();
+        session_num = 0;
+    } else if (session_num == 1){
+        $(`.${username.replace(/ /g, "")}_session_0`).hide();
+        $(`.${username.replace(/ /g, "")}_session_1`).show();
+        $(`.${username.replace(/ /g, "")}_session_2`).hide();
+    } else {
+        $(`.${username.replace(/ /g, "")}_session_0`).hide();
+        $(`.${username.replace(/ /g, "")}_session_1`).hide();
+        $(`.${username.replace(/ /g, "")}_session_2`).show();
+        session_num = 2;
+    }
+
 }
