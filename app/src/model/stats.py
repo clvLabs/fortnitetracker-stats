@@ -1,3 +1,4 @@
+import logging
 import json
 from datetime import datetime
 from .stats_item import StatsItem
@@ -6,6 +7,7 @@ DATA_FOLDER = "/fortnitetracker-stats/data"
 
 class Stats():
     def __init__(self, _cfg):
+        self.log = logging.getLogger('model_stats')
         self.cfg = _cfg
         self.overall = []
         self.solo = []
@@ -47,41 +49,44 @@ class Stats():
 
     
     def add_stats_from_trn_dict(self, username, trn_data):
-        gap = self.cfg["sessions"]["gapBetweenSessions"] # gap en segundos
-        last_match_date = datetime.strptime(trn_data["recentMatches"][0]["dateCollected"], "%Y-%m-%dT%H:%M:%S")
-        now = datetime.now()
-        interval = abs(now - last_match_date).seconds
+        try:
+            gap = self.cfg["sessions"]["gapBetweenSessions"] # gap en segundos
+            last_match_date = datetime.strptime(trn_data["recentMatches"][0]["dateCollected"], "%Y-%m-%dT%H:%M:%S")
+            now = datetime.now()
+            interval = abs(now - last_match_date).seconds
 
-        self.fill_for_user(username)
-        # solo actualizamos stats si hemos cambiado de sesion y hay datos nuevos
-        if interval > gap or not self.overall:
-            new_data = False
-            if self.solo:
-                if trn_data["stats"]["p2"]["matches"]["valueInt"] > self.solo[-1].matches:
+            self.fill_for_user(username)
+            # solo actualizamos stats si hemos cambiado de sesion y hay datos nuevos
+            if interval > gap or not self.overall:
+                new_data = False
+                if self.solo:
+                    if trn_data["stats"]["p2"]["matches"]["valueInt"] > self.solo[-1].matches:
+                        self.solo.append(StatsItem.from_trn_dict("solo", trn_data))
+                        new_data = True
+                else:
                     self.solo.append(StatsItem.from_trn_dict("solo", trn_data))
                     new_data = True
-            else:
-                self.solo.append(StatsItem.from_trn_dict("solo", trn_data))
-                new_data = True
-            
-            if self.duos:
-                if trn_data["stats"]["p10"]["matches"]["valueInt"] > self.duos[-1].matches:
+                
+                if self.duos:
+                    if trn_data["stats"]["p10"]["matches"]["valueInt"] > self.duos[-1].matches:
+                        self.duos.append(StatsItem.from_trn_dict("duos", trn_data))
+                        new_data = True
+                else:
                     self.duos.append(StatsItem.from_trn_dict("duos", trn_data))
                     new_data = True
-            else:
-                self.duos.append(StatsItem.from_trn_dict("duos", trn_data))
-                new_data = True
 
-            if self.squad:
-                if trn_data["stats"]["p9"]["matches"]["valueInt"] > self.squad[-1].matches:
+                if self.squad:
+                    if trn_data["stats"]["p9"]["matches"]["valueInt"] > self.squad[-1].matches:
+                        self.squad.append(StatsItem.from_trn_dict("squad", trn_data))
+                        new_data = True
+                else:
                     self.squad.append(StatsItem.from_trn_dict("squad", trn_data))
                     new_data = True
-            else:
-                self.squad.append(StatsItem.from_trn_dict("squad", trn_data))
-                new_data = True
-            
-            if new_data:
-                self.overall.append(self.get_new_overall())
+                
+                if new_data:
+                    self.overall.append(self.get_new_overall())
+        except:
+            self.log.error("add_stats_from_trn_dict() Cant add stats, possible empty matches dict")
 
 
     def get_new_overall(self):
