@@ -45,11 +45,12 @@ def _initRoutes():
             matches = sorted(matches, key=lambda item: item.date_collected, reverse=True) # ordenamos por fecha
             prev_match = matches[0]
             current_session = Session(user)
+            i = 0
 
             for match in matches:
                 match_date = datetime.strptime(match.date_collected, "%Y-%m-%dT%H:%M:%S.%f0")
                 prev_match_date = datetime.strptime(prev_match.date_collected, "%Y-%m-%dT%H:%M:%S.%f0")
-                interval = abs(prev_match_date - match_date).seconds # intervalo entre matches
+                interval = abs(prev_match_date - match_date).total_seconds() # intervalo entre matches
                 if interval > gap: # encontramos el corte de sesion
                     sessions.append(current_session)
                     current_session = Session(user)
@@ -58,8 +59,11 @@ def _initRoutes():
                 if current_session.game_mode != None and current_session.game_mode != match.game_mode: #encontramos cambio de modo de juego
                     sessions.append(current_session)
                     current_session = Session(user)
+                    if len(sessions) >= num_sessions:   # ya tenemos las sesiones que nos han pedido
+                        return sessions
                 current_session.add_match(match)
                 prev_match = match
+                i += 1
             return sessions
         
     class LastSessionApiRoute(Resource):
