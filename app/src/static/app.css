@@ -178,16 +178,22 @@ div.steelBlueCols {
 .divTable.steelBlueCols .divTableBody .divTableCell.Victory {
     background-color: #1e9fdb;
 }
-.divTable.steelBlueCols .divTableBody .divTableCell.Top10 {
+.divTable.steelBlueCols .divTableBody .divTableCell.Top3 {
     background-color: #0e5576;
-}
-.divTable.steelBlueCols .divTableBody .divTableCell.Top25 {
-    background-color: #3c5663;
 }
 .divTable.steelBlueCols .divTableBody .divTableCell.Top5 {
     background-color: #0e5576;
 }
+.divTable.steelBlueCols .divTableBody .divTableCell.Top10 {
+    background-color: #0e5576;
+}
+.divTable.steelBlueCols .divTableBody .divTableCell.Top6 {
+    background-color: #3c5663;
+}
 .divTable.steelBlueCols .divTableBody .divTableCell.Top12 {
+    background-color: #3c5663;
+}
+.divTable.steelBlueCols .divTableBody .divTableCell.Top25 {
     background-color: #3c5663;
 }
 .divTable.steelBlueCols .divTableCell:nth-child(even) {

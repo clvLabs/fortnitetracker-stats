@@ -33,10 +33,11 @@ function onSelectProfile(profile_name)
 {
     if ($(`#${profile_name}-input`).is(":checked"))
     {
-        $(`#divTableRow_${profile_name}`).show("slow")
+        $(`.${profile_name}_session_${session_num}`).show("slow")
+        
         $(`#divTable_${profile_name}`).show("slow");
     } else {
-        $(`#divTableRow_${profile_name}`).hide("slow")
+        $(`.${profile_name}_session_${session_num}`).hide("slow")
         $(`#divTable_${profile_name}`).hide("slow");
     }
 }
@@ -111,20 +112,22 @@ function loadSessionsOfProfile(profile_name, index, is_first_load) {
         
         if (is_first_load) {
             if (index > 0) {
-                $(`#divTableRow_${_username}`).hide();
+                $(`.${_username}_session_0`).hide()
                 $(`#divTable_${_username}`).hide();
             } else {
                 $(`#${_username}-input`).prop('checked', true);
             }
         } else {
             if (!$(`#${_username}-input`).is(":checked")) {
-                $(`#divTableRow_${_username}`).hide();
+                $(`.${_username}_session_0`).hide()
                 $(`#divTable_${_username}`).hide();
             }
         }
         
-        $(`.${_username}_session_1`).hide();
-        $(`.${_username}_session_2`).hide();
+        for (i=1;i<10;i++) {
+            $(`.${_username}_session_${i}`).hide();
+            $(`#divTableRow_${_username}_session_${i}`).hide();
+        }
     }
 
     function onError(xhr, ajaxOptions, thrownError) {
@@ -134,7 +137,7 @@ function loadSessionsOfProfile(profile_name, index, is_first_load) {
     }
 
     $.get({
-        url: `api/v1/${profile_name}/session/last?n=3`,
+        url: `api/v1/${profile_name}/session/last?n=10`,
         dataType: 'json',
         error: onError,
         success: onSuccess
@@ -181,17 +184,21 @@ function startTimer() {
 
 function getLastSessionTable(profiles_data) {
     sessionsHTML = $('#sessions-info-div').html();
-    sessionsHTML += `<div class="divTableBody"><div class="divTableRow" id="divTableRow_${profiles_data.session[0].username.replace(/ /g, "")}">`;
-    sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].username}</div>`;
-    sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].game_mode}</div>`;
-    sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].total_matches}</div>`;
-    sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].total_kills}</div>`;
-    sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].kill_ratio.toFixed(2)}</div>`;
-    sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].total_eskores}</div>`;
-    sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].eskores_ratio.toFixed(2)}</div>`;
-    sessionsHTML += `<div class="divTableCell">${(profiles_data.session[0].last_trn_rating - profiles_data.session[0].first_trn_rating).toFixed(2)}</div>`;
-    sessionsHTML += `<div class="divTableCell">${profiles_data.session[0].best_match}</div>`;
-    sessionsHTML += `</div></div>`;
+    sessionsHTML += `<div class="divTableBody">`
+    for (i=0; i < 10; i++) {
+        sessionsHTML += `<div class="divTableRow ${profiles_data.session[session_num].username.replace(/ /g, "")}_session_${i}">`;
+        sessionsHTML += `<div class="divTableCell">${profiles_data.session[i].username}</div>`;
+        sessionsHTML += `<div class="divTableCell">${profiles_data.session[i].game_mode}</div>`;
+        sessionsHTML += `<div class="divTableCell">${profiles_data.session[i].total_matches}</div>`;
+        sessionsHTML += `<div class="divTableCell">${profiles_data.session[i].total_kills}</div>`;
+        sessionsHTML += `<div class="divTableCell">${profiles_data.session[i].kill_ratio.toFixed(2)}</div>`;
+        sessionsHTML += `<div class="divTableCell">${profiles_data.session[i].total_eskores}</div>`;
+        sessionsHTML += `<div class="divTableCell">${profiles_data.session[i].eskores_ratio.toFixed(2)}</div>`;
+        sessionsHTML += `<div class="divTableCell">${(profiles_data.session[i].last_trn_rating - profiles_data.session[i].first_trn_rating).toFixed(2)}</div>`;
+        sessionsHTML += `<div class="divTableCell">${profiles_data.session[i].best_match}</div>`;
+        sessionsHTML += `</div>`;
+    }
+    sessionsHTML += `</div>`;
     return sessionsHTML;
 }
 
@@ -241,13 +248,17 @@ function getDifferenceBetweenDates(match_date) {
     ahora = Date.now()
     diff = ahora - match_date;
     if (diff < 60*1000) {
-        retval ="seconds ago"
+        truncated = (diff/(60*1000)) | 0
+        retval = truncated + "seconds ago"
     } else if (diff < 60*60*1000) {
-        retval = (diff/(60*1000)).toFixed(0) + " minutes ago"
+        truncated = (diff/(60*1000)) | 0
+        retval = truncated + " minutes ago"
     } else if (diff < 24*60*60*1000) {
-        retval = (diff/(60*60*1000)).toFixed(0) + " hours ago"
+        truncated = (diff/(60*60*1000)) | 0
+        retval = truncated + " hours ago"
     } else {
-        retval = (diff/(24*60*60*1000)).toFixed(0) + " days ago"
+        truncated = (diff/(24*60*60*1000)) | 0
+        retval = truncated + " days ago"
     }
     return retval;
 }
@@ -259,19 +270,18 @@ function onChangeSessionInfo(username, action) {
         session_num++;
     }
     if (session_num <= 0) {
-        $(`.${username.replace(/ /g, "")}_session_0`).show();
-        $(`.${username.replace(/ /g, "")}_session_1`).hide();
-        $(`.${username.replace(/ /g, "")}_session_2`).hide();
         session_num = 0;
-    } else if (session_num == 1){
-        $(`.${username.replace(/ /g, "")}_session_0`).hide();
-        $(`.${username.replace(/ /g, "")}_session_1`).show();
-        $(`.${username.replace(/ /g, "")}_session_2`).hide();
-    } else {
-        $(`.${username.replace(/ /g, "")}_session_0`).hide();
-        $(`.${username.replace(/ /g, "")}_session_1`).hide();
-        $(`.${username.replace(/ /g, "")}_session_2`).show();
-        session_num = 2;
+    } else if (session_num >= 9){
+        session_num = 9
+    }
+    for (i=0; i < 10; i++) {
+        if (session_num == i) {
+            //$(`#divTableRow_${_username}_session_${i}`).show();
+            $(`.${username.replace(/ /g, "")}_session_${i}`).show();
+        } else {
+            //$(`#divTableRow_${_username}_session_${i}`).hide();
+            $(`.${username.replace(/ /g, "")}_session_${i}`).hide();
+        }
     }
 
 }
